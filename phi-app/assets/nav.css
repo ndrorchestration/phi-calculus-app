@@ -1,0 +1,135 @@
+/* assets/nav.css — shared across all pages */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+:root {
+    --phi-blue: #4db8ff;
+    --phi-gold: #ffd700;
+    --bg-dark:  #010409;
+    --border:   rgba(77, 184, 255, 0.22);
+    --text-dim: rgba(77, 184, 255, 0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: var(--bg-dark);
+    color: var(--phi-blue);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+}
+
+/* ── NAV ──────────────────────────────────────────────────── */
+#phi-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: 52px;
+    background: rgba(1, 4, 9, 0.97);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+}
+.phi-nav-inner {
+    max-width: 1200px; margin: 0 auto;
+    height: 100%; padding: 0 28px;
+    display: flex; align-items: center; gap: 32px;
+}
+.phi-nav-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 13px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--phi-blue); text-decoration: none;
+    white-space: nowrap;
+}
+.phi-nav-brand .gold { color: var(--phi-gold); }
+.phi-nav-sub {
+    font-size: 9px; letter-spacing: 2px;
+    color: var(--text-dim); margin-left: 8px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+}
+.phi-nav-links {
+    display: flex; gap: 4px; flex: 1;
+}
+.phi-nav-link {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 6px;
+    font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+}
+.phi-nav-link:hover {
+    color: var(--phi-blue);
+    border-color: var(--border);
+    background: rgba(77, 184, 255, 0.05);
+}
+.phi-nav-link.active {
+    color: var(--phi-blue);
+    border-color: rgba(77, 184, 255, 0.4);
+    background: rgba(77, 184, 255, 0.08);
+    box-shadow: 0 0 12px rgba(77, 184, 255, 0.15);
+}
+.phi-nav-icon { font-size: 11px; opacity: 0.8; }
+.phi-nav-badge {
+    font-size: 8px; letter-spacing: 2px;
+    padding: 3px 10px; border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text-dim); white-space: nowrap;
+}
+
+/* ── SHARED PAGE SHELL ────────────────────────────────────── */
+.page-wrap {
+    max-width: 1200px; margin: 0 auto;
+    padding: 48px 28px 80px;
+}
+.page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+    line-height: 1.1; margin-bottom: 8px;
+}
+.page-title .gold { color: var(--phi-gold); }
+.page-subtitle {
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--text-dim); margin-bottom: 48px;
+    text-transform: uppercase;
+}
+.card {
+    background: rgba(77, 184, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    margin-bottom: 20px;
+}
+.card-label {
+    font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 14px;
+    border-left: 2px solid var(--phi-blue); padding-left: 10px;
+}
+.divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 32px 0;
+}
+
+/* ── BUTTONS ──────────────────────────────────────────────── */
+.btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    cursor: pointer; transition: all 0.3s ease;
+    border: 1px solid var(--phi-blue);
+    background: rgba(77, 184, 255, 0.07);
+    color: var(--phi-blue);
+}
+.btn:hover {
+    background: var(--phi-blue); color: var(--bg-dark);
+    box-shadow: 0 0 28px rgba(77, 184, 255, 0.4);
+}
+.btn-gold {
+    border-color: var(--phi-gold);
+    background: rgba(255, 215, 0, 0.06);
+    color: var(--phi-gold);
+}
+.btn-gold:hover {
+    background: var(--phi-gold); color: var(--bg-dark);
+    box-shadow: 0 0 28px rgba(255, 215, 0, 0.4);
+}

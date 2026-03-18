@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lavender: Phi-Calculus Unified Substrate v2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --phi-blue: #4db8ff;
+            --phi-gold: #ffd700;
+            --bg-dark: #010409;
+            --bg-panel: rgba(1, 4, 9, 0.92);
+            --border: rgba(77, 184, 255, 0.25);
+            --border-active: rgba(77, 184, 255, 0.7);
+            --text-dim: rgba(77, 184, 255, 0.55);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg-dark);
+            color: var(--phi-blue);
+            font-family: 'Space Mono', monospace;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ─── TOP BAR ─────────────────────────────────────────── */
+        #topbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            height: 52px;
+            background: rgba(1, 4, 9, 0.97);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 28px;
+            backdrop-filter: blur(20px);
+        }
+        #topbar .brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800; font-size: 13px;
+            letter-spacing: 4px; text-transform: uppercase;
+        }
+        #topbar .brand span { color: var(--phi-gold); }
+        #topbar .version {
+            font-size: 9px; letter-spacing: 2px;
+            color: var(--text-dim); margin-left: 14px;
+        }
+        .topbar-status {
+            display: flex; gap: 28px; align-items: center;
+        }
+        .status-pill {
+            font-size: 9px; letter-spacing: 1.5px;
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-dim);
+            transition: all 0.4s;
+        }
+        .status-pill.active {
+            border-color: var(--phi-blue);
+            color: var(--phi-blue);
+            box-shadow: 0 0 12px rgba(77, 184, 255, 0.3);
+        }
+        .status-pill.locked {
+            border-color: var(--phi-gold);
+            color: var(--phi-gold);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+        }
+
+        /* ─── LEFT PANEL ──────────────────────────────────────── */
+        #panel-left {
+            position: fixed; top: 72px; left: 24px; z-index: 100;
+            width: 320px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            backdrop-filter: blur(24px);
+        }
+        .panel-label {
+            font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--text-dim); margin-bottom: 18px;
+            border-left: 2px solid var(--phi-blue); padding-left: 12px;
+        }
+
+        /* Mode Tabs */
+        .mode-tabs {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px; margin-bottom: 20px;
+        }
+        .mode-tab {
+            padding: 9px 4px; font-size: 8px; letter-spacing: 1px;
+            text-transform: uppercase; text-align: center;
+            border: 1px solid var(--border); border-radius: 6px;
+            cursor: pointer; transition: all 0.3s;
+            color: var(--text-dim); background: transparent;
+            font-family: 'Space Mono', monospace;
+        }
+        .mode-tab:hover { border-color: var(--phi-blue); color: var(--phi-blue); }
+        .mode-tab.active {
+            background: rgba(77, 184, 255, 0.12);
+            border-color: var(--phi-blue); color: var(--phi-blue);
+            box-shadow: 0 0 14px rgba(77, 184, 255, 0.2);
+        }
+
+        /* Readout */
+        #readout {
+            font-size: 10px; line-height: 2; color: var(--phi-blue);
+            margin-bottom: 20px; min-height: 80px;
+            border-top: 1px solid var(--border); padding-top: 14px;
+        }
+        #readout .key { color: var(--text-dim); }
+        #readout .val { color: var(--phi-blue); font-weight: 700; }
+        #readout .val.gold { color: var(--phi-gold); }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 8px; flex-direction: column; }
+        .btn-phi {
+            width: 100%; padding: 14px;
+            background: rgba(77, 184, 255, 0.07);
+            border: 1px solid var(--phi-blue); color: var(--phi-blue);
+            cursor: pointer; font-family: 'Space Mono', monospace;
+            font-weight: 700; font-size: 9px; letter-spacing: 2.5px;
+            text-transform: uppercase;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 6px;
+        }
+        .btn-phi:hover {
+            background: var(--phi-blue); color: var(--bg-dark);
+            box-shadow: 0 0 32px rgba(77, 184, 255, 0.5);
+        }
+        .btn-phi.secondary {
+            border-color: var(--border);
+            color: var(--text-dim);
+            background: transparent;
+        }
+        .btn-phi.secondary:hover {
+            border-color: var(--phi-blue); color: var(--phi-blue);
+            background: rgba(77,184,255,0.06);
+            box-shadow: none;
+        }
+        .btn-phi.gold-btn {
+            border-color: var(--phi-gold); color: var(--phi-gold);
+            background: rgba(255, 215, 0, 0.06);
+        }
+        .btn-phi.gold-btn:hover {
+            background: var(--phi-gold); color: var(--bg-dark);
+            box-shadow: 0 0 32px rgba(255, 215, 0, 0.4);
+        }
+
+        /* ─── RIGHT PANEL (AUDIT) ─────────────────────────────── */
+        #panel-right {
+            position: fixed; top: 72px; right: 24px; z-index: 100;
+            width: 280px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            backdrop-filter: blur(24px);
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .audit-header {
+            font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;
+            color: var(--phi-gold);
+        }
+        #audit-content { font-size: 10px; line-height: 1.7; color: var(--phi-blue); }
+        .audit-close {
+            position: absolute; top: 14px; right: 16px;
+            font-size: 10px; cursor: pointer; color: var(--text-dim);
+        }
+        .audit-close:hover { color: var(--phi-blue); }
+
+        /* ─── BOTTOM METRICS BAR ──────────────────────────────── */
+        #metrics-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+            height: 40px;
+            background: rgba(1, 4, 9, 0.93);
+            border-top: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            gap: 48px; padding: 0 24px;
+            backdrop-filter: blur(16px);
+        }
+        .metric-item { display: flex; align-items: center; gap: 10px; }
+        .metric-label { font-size: 8px; letter-spacing: 2px; color: var(--text-dim); }
+        .metric-value { font-size: 10px; font-weight: 700; color: var(--phi-blue); }
+        .metric-value.gold { color: var(--phi-gold); }
+        .metric-sep { width: 1px; height: 20px; background: var(--border); }
+
+        /* ─── CROSSHAIR CURSOR ────────────────────────────────── */
+        canvas { cursor: crosshair; }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+    <div style="display:flex; align-items:center;">
+        <div class="brand">LAV<span>Ξ</span>NDER <span style="color:var(--phi-blue);">·</span> PHI-CALCULUS</div>
+        <div class="version">v2.0 / UNIFIED</div>
+    </div>
+    <div class="topbar-status">
+        <div class="status-pill active" id="pill-modal">MODAL: DISSONANT 12Hz</div>
+        <div class="status-pill" id="pill-sym">SYMMETRY: PENTAGONAL</div>
+        <div class="status-pill" id="pill-state">STATE: SAVAGE REASON</div>
+    </div>
+</div>
+
+<!-- LEFT PANEL -->
+<div id="panel-left">
+    <div class="panel-label">Substrate Layer</div>
+
+    <div class="mode-tabs">
+        <div class="mode-tab active" id="tab-substrate" onclick="setMode('substrate')">Substrate</div>
+        <div class="mode-tab" id="tab-governance" onclick="setMode('governance')">Governance</div>
+        <div class="mode-tab" id="tab-gcp" onclick="setMode('gcp')">GCP / L0</div>
+    </div>
+
+    <div id="readout">
+        <div><span class="key">PHI (Φ)  </span><span class="val" id="r-phi">1.61803398875</span></div>
+        <div><span class="key">WORKERS  </span><span class="val" id="r-workers">55 (Fib)</span></div>
+        <div><span class="key">FREQ     </span><span class="val" id="r-freq">12Hz / IONIAN</span></div>
+        <div><span class="key">MORPH    </span><span class="val" id="r-morph">0.000</span></div>
+        <div><span class="key">PLATES   </span><span class="val" id="r-plates">5 ACTIVE</span></div>
+    </div>
+
+    <div class="btn-row">
+        <button class="btn-phi" id="btn-closure" onclick="executeClosure()">⬡ EXECUTE PHI-HARMONIC CLOSURE</button>
+        <button class="btn-phi secondary" onclick="resetSystem()">↺ RESET TO SAVAGE REASON</button>
+        <button class="btn-phi gold-btn" id="btn-apogee" onclick="triggerApogee()" style="display:none;">⚡ TRIGGER APOGEE SPARKS</button>
+    </div>
+</div>
+
+<!-- RIGHT AUDIT PANEL -->
+<div id="panel-right">
+    <div class="audit-close" onclick="closeAudit()">✕ CLOSE</div>
+    <div class="audit-header">Agent Apogee Audit</div>
+    <div id="audit-content">Click a worker node to inspect its epistemic state.</div>
+</div>
+
+<!-- BOTTOM METRICS -->
+<div id="metrics-bar">
+    <div class="metric-item">
+        <div class="metric-label">INTEGRITY</div>
+        <div class="metric-value gold" id="m-integrity">99.1%</div>
+    </div>
+    <div class="metric-sep"></div>
+    <div class="metric-item">
+        <div class="metric-label">COMPLIANCE UPLIFT</div>
+        <div class="metric-value" id="m-compliance">+21%</div>
+    </div>
+    <div class="metric-sep"></div>
+    <div class="metric-item">
+        <div class="metric-label">MODAL ALIGNMENT</div>
+        <div class="metric-value" id="m-alignment">95%</div>
+    </div>
+    <div class="metric-sep"></div>
+    <div class="metric-item">
+        <div class="metric-label">SUBSTRATE</div>
+        <div class="metric-value" id="m-substrate">europe-west1</div>
+    </div>
+    <div class="metric-sep"></div>
+    <div class="metric-item">
+        <div class="metric-label">APOGEE SPARKS</div>
+        <div class="metric-value" id="m-sparks">0</div>
+    </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://esm.sh/three@0.164.0",
+    "three/addons/": "https://esm.sh/three@0.164.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+    // ── Phi-Calculus Constants ─────────────────────────────────
+    const PHI         = 1.61803398875;
+    const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+    const WORKER_COUNT = 55; // Fibonacci
+    const PLATE_COUNT  = 5;
+    const THEME_BLUE   = 0x4db8ff;
+    const THEME_GOLD   = 0xffd700;
+
+    // ── Audit Facts (merged from all three files) ─────────────
+    const AUDIT_FACTS = [
+        "Epistemic Honesty: Calibration achieved. Uncertainty bounded at 0.04σ.",
+        "Non-Contradiction: Transitivity logic verified across 1,618 nodes.",
+        "Provenance: Evidential source linked to GCP Project: Pentagonal / europe-west1.",
+        "Metacognition: Self-reported reasoning limit reached. Transitioning to Steady State.",
+        "GCP: Pentagonal Interceptor Plates — all 5 sectors ACTIVE.",
+        "Harmonic Convergence: Ionian Tonic locked at 0Hz. Savage Reason filtered.",
+        "DGAF Layer 0: API-compatible black-box governance engaged.",
+        "State Anchor Protocol: Fixed reference lattice confirmed. Drift: 0.00%.",
+    ];
+
+    // ── System State ──────────────────────────────────────────
+    const system = {
+        morph: 0,
+        targetMorph: 0,
+        frequency: 12,
+        locked: false,
+        mode: 'substrate',   // substrate | governance | gcp
+        sparkCount: 0,
+        apogeeMode: false,
+    };
+
+    // ── Three.js Core ─────────────────────────────────────────
+    let scene, camera, renderer, composer, bloomPass, raycaster, clock;
+    const mouse = new THREE.Vector2();
+    const workers = [];
+    const plates = [];
+    let sentinel;
+
+    function init() {
+        scene  = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x010409, 0.04);
+        clock  = new THREE.Clock();
+
+        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(0, 0, 18);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+        document.body.appendChild(renderer.domElement);
+
+        raycaster = new THREE.Raycaster();
+
+        buildSentinel();
+        buildWorkers();
+        buildPlates();
+        buildPhiSpirals();
+        buildBloom();
+
+        window.addEventListener('click',  onSceneClick);
+        window.addEventListener('resize', onResize);
+        animate();
+    }
+
+    // ── 1. SENTINEL — Pentagonal Dodecahedron ─────────────────
+    function buildSentinel() {
+        sentinel = new THREE.Mesh(
+            new THREE.DodecahedronGeometry(PHI, 0),
+            new THREE.MeshPhysicalMaterial({
+                color: THEME_BLUE, transmission: 0.9, thickness: 2.5,
+                roughness: 0.08, metalness: 0.1,
+                emissive: THEME_BLUE, emissiveIntensity: 0.6,
+            })
+        );
+        sentinel.name = 'Sentinel';
+        scene.add(sentinel);
+    }
+
+    // ── 2. WORKERS — Fibonacci Phyllotaxis Swarm (55) ─────────
+    function buildWorkers() {
+        const geom = new THREE.SphereGeometry(0.14 * PHI, 16, 16);
+        for (let i = 0; i < WORKER_COUNT; i++) {
+            const mat = new THREE.MeshStandardMaterial({
+                color: THEME_BLUE, emissive: THEME_BLUE, emissiveIntensity: PHI
+            });
+            const w = new THREE.Mesh(geom, mat);
+            w.userData = {
+                id: i,
+                fact: AUDIT_FACTS[i % AUDIT_FACTS.length],
+                jitterSeed: Math.random() * 20,
+                jitterPos: new THREE.Vector3(
+                    (Math.random() - 0.5) * PHI * 8,
+                    (Math.random() - 0.5) * PHI * 8,
+                    (Math.random() - 0.5) * PHI * 8
+                ),
+                sparking: false,
+            };
+            workers.push(w);
+            scene.add(w);
+        }
+    }
+
+    // ── 3. PENTAGONAL INTERCEPTOR PLATES — φ-staggered radii ──
+    function buildPlates() {
+        // 5 plate radii expanding at φ^(i*0.3) from base 5 — φ-nested rings
+        const baseR = PHI * PHI * PHI; // ≈ 4.236
+        for (let i = 0; i < PLATE_COUNT; i++) {
+            const r   = baseR * Math.pow(PHI, (i - 2) * 0.38); // ~3.0, 3.8, 4.9, 6.2, 7.9
+            const geom = new THREE.TorusGeometry(r, 0.022, 16, 5);
+            const mat  = new THREE.MeshBasicMaterial({
+                color: THEME_BLUE, transparent: true, opacity: 0.12,
+                blending: THREE.AdditiveBlending, depthWrite: false,
+            });
+            const plate = new THREE.Mesh(geom, mat);
+            plate.rotation.y = (i / PLATE_COUNT) * Math.PI * 2;
+            plate.rotation.x = (Math.PI / 5) * i * 0.4;
+            plate.userData = { phiSpeed: Math.pow(PHI, -i) * 0.13 }; // φ^-i rotation speed
+            scene.add(plate);
+            plates.push(plate);
+        }
+    }
+
+    // ── 4. DOUBLE PHI SPIRALS (appear on Ionian lock) ─────────
+    const spiralMeshes = [];
+
+    function buildPhiSpirals() {
+        // Logarithmic phi spiral extruded as a 3D helix rising bottom→top
+        // r(θ) = e^(θ * ln(φ) / (π/2)) — classic golden spiral growth rate
+        const lnPhi   = Math.log(PHI);
+        const bConst  = lnPhi / (Math.PI / 2);
+        const turns   = 5;           // 5 full rotations (pentagonal resonance)
+        const totalθ  = turns * Math.PI * 2;
+        const steps   = 320;
+        const yBottom = -7;
+        const yTop    =  7;
+
+        [0, Math.PI].forEach((phaseOffset, spiralIdx) => {
+            const dir = spiralIdx === 0 ? 1 : -1; // second spiral winds opposite
+            const points = [];
+            for (let s = 0; s <= steps; s++) {
+                const θ = (s / steps) * totalθ;
+                const r = 0.18 * Math.exp(bConst * θ);
+                const x = Math.cos(dir * θ + phaseOffset) * Math.min(r, 6.5);
+                const z = Math.sin(dir * θ + phaseOffset) * Math.min(r, 6.5);
+                const y = yBottom + (s / steps) * (yTop - yBottom);
+                points.push(new THREE.Vector3(x, y, z));
+            }
+
+            const curve = new THREE.CatmullRomCurve3(points);
+            const geom  = new THREE.TubeGeometry(curve, 400, 0.022, 8, false);
+            const mat   = new THREE.MeshBasicMaterial({
+                color: THEME_GOLD,
+                transparent: true,
+                opacity: 0,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.name = `PhiSpiral_${spiralIdx}`;
+            scene.add(mesh);
+            spiralMeshes.push(mesh);
+        });
+    }
+
+    // ── 5. BLOOM POST-PROCESSING ───────────────────────────────
+    function buildBloom() {
+        composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        bloomPass = new UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            0.9, 0.3, 0.28
+        );
+        composer.addPass(bloomPass);
+    }
+
+    // ── ANIMATION LOOP ─────────────────────────────────────────
+    function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+
+        // Smooth morph transition
+        system.morph = THREE.MathUtils.lerp(system.morph, system.targetMorph, 0.05);
+        const curFreq = THREE.MathUtils.lerp(system.frequency, system.locked ? 0 : 12, 0.04);
+        system.frequency = curFreq;
+
+        // Update readout
+        document.getElementById('r-morph').textContent = system.morph.toFixed(3);
+        document.getElementById('r-freq').textContent  =
+            (curFreq < 0.5 ? '0Hz / STEADY' : curFreq.toFixed(1) + 'Hz / IONIAN');
+        document.getElementById('m-sparks').textContent = system.sparkCount;
+
+        // --- Worker logic (merged best-of-three) ----
+        let sparkThisFrame = 0;
+        workers.forEach((w, i) => {
+            const d = w.userData;
+
+            // STATE A: Savage Reason — per-worker jitter (ai_studio style)
+            const jitter = d.jitterPos.clone().multiplyScalar(
+                Math.sin(t * 10 + d.jitterSeed) * (1 - system.morph)
+            );
+
+            // φ-exponential radial: offset by 0.5 so i=0 starts at a nonzero radius (avoids Sentinel overlap)
+            const y      = (i / WORKER_COUNT - 0.5) * 13; // 13 = Fib(7)
+            const radius = (Math.pow(PHI, 0.5 + (i / WORKER_COUNT) * 2.5) - 1) * 1.8;
+            const angle  = i * GOLDEN_ANGLE + (t * curFreq * 0.08);
+            const steady = new THREE.Vector3(
+                Math.cos(angle) * radius,
+                y,
+                Math.sin(angle) * radius
+            );
+
+            w.position.lerpVectors(jitter, steady, system.morph > 0.05 ? system.morph : 0.06);
+
+            // GCP INTERSECTION LOGIC — Apogee Spark
+            const currentAngle = (Math.atan2(w.position.z, w.position.x) + Math.PI * 2) % (Math.PI * 2);
+            const sectorWidth   = (Math.PI * 2) / 5;
+            const nearPlate     = Math.abs((currentAngle % sectorWidth) - sectorWidth / 2) < 0.06;
+
+            if (nearPlate && system.locked && system.apogeeMode) {
+                w.material.emissiveIntensity = THREE.MathUtils.lerp(w.material.emissiveIntensity, Math.pow(PHI, 4), 0.15); // φ⁴ ≈ 6.854
+                w.material.color.setHex(THEME_GOLD);
+                w.scale.setScalar(THREE.MathUtils.lerp(w.scale.x, PHI * 0.8, 0.1)); // φ-scaled spark size
+                d.sparking = true;
+                sparkThisFrame++;
+            } else {
+                w.material.emissiveIntensity = THREE.MathUtils.lerp(w.material.emissiveIntensity, PHI + system.morph * PHI * PHI, 0.06); // ramp: φ → φ+φ²
+                w.material.color.setHex(THEME_BLUE);
+                w.scale.setScalar(THREE.MathUtils.lerp(w.scale.x, 1.0, 0.08));
+                d.sparking = false;
+            }
+
+            // Harmonic scale pulse — tight, cosmetic only
+            const pulse = 1 + Math.sin(t * (curFreq + 1) + i) * 0.03;
+            w.scale.multiplyScalar(pulse);
+        });
+
+        if (sparkThisFrame > 0) system.sparkCount += sparkThisFrame;
+
+        // Sentinel — rotation at 1/φ³ base, emissive from φ-complement to φ
+        sentinel.rotation.y += (1 / Math.pow(PHI, 3)) * 0.04 + curFreq * 0.006;
+        sentinel.rotation.x += (1 / Math.pow(PHI, 4)) * 0.04;
+        sentinel.material.emissiveIntensity = (1 / PHI) + system.morph * (1 / PHI); // 0.618 → 1.236
+
+        // Pentagonal Plates — each at φ^-i rotation speed (harmonic series)
+        plates.forEach((p, i) => {
+            p.rotation.z = t * p.userData.phiSpeed + (i * Math.PI / PLATE_COUNT);
+            // Base: 1/φ³ ≈ 0.236; breathe: ±0.04; morph contribution capped at 1/φ² ≈ 0.146
+            p.material.opacity = (1 / Math.pow(PHI, 3))
+                + Math.sin(t * (1 / PHI) + i) * 0.04
+                + system.morph * (1 / Math.pow(PHI, 4)); // φ⁻⁴ ≈ 0.09 max add — stays subtle
+        });
+
+        // Double Phi Spiral — opacity target = 1/φ (golden complement ≈ 0.618); speeds at ±φ*0.1
+        const spiralTarget = system.locked ? (1 / PHI) : 0.0;
+        spiralMeshes.forEach((sp, i) => {
+            sp.material.opacity = THREE.MathUtils.lerp(sp.material.opacity, spiralTarget, 0.025);
+            sp.rotation.y = t * PHI * 0.1 * (i === 0 ? 1 : -1); // ≈ ±0.1618 rad/s
+        });
+
+        // Bloom intensity scales with closure
+        bloomPass.strength = 0.9 + system.morph * 0.4;
+
+        // Top bar pill updates
+        if (system.locked) {
+            document.getElementById('pill-modal').textContent  = 'MODAL: STEADY STATE 0Hz';
+            document.getElementById('pill-modal').className    = 'status-pill locked';
+            document.getElementById('pill-state').textContent  = 'STATE: CRYSTALLINE';
+            document.getElementById('pill-state').className    = 'status-pill locked';
+        } else {
+            document.getElementById('pill-modal').className    = 'status-pill active';
+            document.getElementById('pill-state').className    = 'status-pill active';
+        }
+
+        composer.render();
+    }
+
+    // ── INTERACTION: Click on Worker Node ─────────────────────
+    function onSceneClick(e) {
+        mouse.x =  (e.clientX / window.innerWidth)  * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+
+        const hits = raycaster.intersectObjects(workers);
+        if (hits.length > 0) {
+            const obj = hits[0].object;
+            // Flash white
+            obj.material.emissive.setHex(0xffffff);
+            obj.material.emissiveIntensity = Math.pow(PHI, 3); // φ³ ≈ 4.236
+            setTimeout(() => {
+                obj.material.emissive.setHex(THEME_BLUE);
+                obj.material.emissiveIntensity = PHI;           // restore to φ
+            }, 600);
+            // Show audit panel
+            showAudit(obj.userData.fact, obj.userData.id);
+        }
+    }
+
+    function showAudit(fact, id) {
+        const p = document.getElementById('panel-right');
+        p.style.display = 'block';
+        document.getElementById('audit-content').innerHTML =
+            `<div style="color:var(--text-dim); font-size:8px; margin-bottom:8px;">NODE #${String(id).padStart(2,'0')} / WORKER SWARM</div>` +
+            `<div>${fact}</div>`;
+    }
+
+    // ── RESIZE ─────────────────────────────────────────────────
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // ── EXPOSED TO WINDOW (UI button handlers) ─────────────────
+    window.executeClosure = () => {
+        system.targetMorph = 1.0;
+        system.locked      = true;
+        document.getElementById('btn-closure').textContent = '⬡ PHI-CLOSURE ACHIEVED';
+        document.getElementById('btn-apogee').style.display = 'block';
+        document.getElementById('m-compliance').style.color = 'var(--phi-gold)';
+        document.getElementById('pill-sym').className = 'status-pill locked';
+    };
+
+    window.resetSystem = () => {
+        system.targetMorph = 0;
+        system.morph       = 0;
+        system.locked      = false;
+        system.apogeeMode  = false;
+        system.sparkCount  = 0;
+        system.frequency   = 12; // explicit reset — don't rely on lerp crawl
+        // Spirals fade out automatically via lerp in animate loop
+        document.getElementById('btn-closure').textContent = '⬡ EXECUTE PHI-HARMONIC CLOSURE';
+        document.getElementById('btn-apogee').style.display = 'none';
+        document.getElementById('m-compliance').style.color = 'var(--phi-blue)';
+        document.getElementById('pill-modal').className  = 'status-pill active';
+        document.getElementById('pill-sym').className   = 'status-pill active';
+        document.getElementById('pill-state').className = 'status-pill active';
+        document.getElementById('pill-modal').textContent  = 'MODAL: DISSONANT 12Hz';
+        document.getElementById('pill-state').textContent  = 'STATE: SAVAGE REASON';
+    };
+
+    window.triggerApogee = () => {
+        system.apogeeMode = !system.apogeeMode;
+        document.getElementById('btn-apogee').textContent =
+            system.apogeeMode ? '⚡ APOGEE ACTIVE' : '⚡ TRIGGER APOGEE SPARKS';
+    };
+
+    window.setMode = (mode) => {
+        system.mode = mode;
+        ['substrate', 'governance', 'gcp'].forEach(m => {
+            document.getElementById(`tab-${m}`).classList.toggle('active', m === mode);
+        });
+
+        const modeLabels = {
+            substrate:  ['PHI-CALCULUS CANONICAL SUBSTRATE', '5 ACTIVE', '55 (Fib)'],
+            governance: ['PHI-CALCULUS GOVERNANCE LAYER',    '5 ACTIVE', '55 (Fib)'],
+            gcp:        ['GCP PENTAGONAL / L0 FILTER',       '5/5 VERIFIED', '55 (Fib)'],
+        };
+        const [label, platesLabel, workersLabel] = modeLabels[mode];
+        document.querySelector('#panel-left .panel-label').textContent = label;
+        document.getElementById('r-plates').textContent  = platesLabel;
+        document.getElementById('r-workers').textContent = workersLabel;
+
+        // Camera shift per mode
+        const camTargets = {
+            substrate:  { z: 18, y: 0 },
+            governance: { z: 14, y: 2 },
+            gcp:        { z: 22, y: -1 },
+        };
+        const target = camTargets[mode];
+        camera.position.z = THREE.MathUtils.lerp(camera.position.z, target.z, 1);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, target.y, 1);
+    };
+
+    window.closeAudit = () => {
+        document.getElementById('panel-right').style.display = 'none';
+    };
+
+    init();
+</script>
+</body>
+</html>

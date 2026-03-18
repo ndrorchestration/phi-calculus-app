@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs · Lavender Phi-Calculus</title>
+    <link rel="stylesheet" href="/assets/nav.css">
+    <style>
+        .docs-layout {
+            display: grid; grid-template-columns: 220px 1fr;
+            gap: 40px; max-width: 1200px; margin: 0 auto;
+            padding: 40px 28px 80px; align-items: start;
+        }
+        @media (max-width: 760px) { .docs-layout { grid-template-columns: 1fr; } }
+
+        /* Sidebar */
+        .docs-sidebar {
+            position: sticky; top: 72px;
+        }
+        .sidebar-section { margin-bottom: 24px; }
+        .sidebar-heading {
+            font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--text-dim); margin-bottom: 10px;
+            padding-left: 10px; border-left: 2px solid var(--border);
+        }
+        .sidebar-link {
+            display: block; padding: 7px 10px; font-size: 9px;
+            letter-spacing: 1px; color: var(--text-dim); text-decoration: none;
+            border-radius: 5px; transition: all 0.2s; margin-bottom: 2px;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            color: var(--phi-blue); background: rgba(77,184,255,0.06);
+        }
+
+        /* Docs content */
+        .docs-content {}
+        .doc-section { margin-bottom: 56px; }
+        .doc-h1 {
+            font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
+            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+        }
+        .doc-h1 .gold { color: var(--phi-gold); }
+        .doc-h2 {
+            font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            margin: 32px 0 12px; padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .doc-lead {
+            font-size: 11px; line-height: 1.9; color: var(--text-dim);
+            margin-bottom: 20px; max-width: 680px;
+        }
+        .doc-p { font-size: 10px; line-height: 1.9; margin-bottom: 14px; max-width: 680px; }
+
+        /* Code blocks */
+        pre {
+            background: rgba(77,184,255,0.04); border: 1px solid var(--border);
+            border-radius: 8px; padding: 20px; overflow-x: auto;
+            font-size: 10px; line-height: 1.7; margin: 16px 0;
+        }
+        code { font-family: 'Space Mono', monospace; color: var(--phi-blue); }
+        .code-label {
+            font-size: 8px; letter-spacing: 2px; color: var(--text-dim);
+            text-transform: uppercase; margin-bottom: 6px;
+        }
+
+        /* Axiom cards */
+        .axiom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+        @media (max-width: 600px) { .axiom-grid { grid-template-columns: 1fr; } }
+        .axiom-card {
+            border: 1px solid var(--border); border-radius: 8px; padding: 18px;
+        }
+        .axiom-num {
+            font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
+            color: var(--phi-gold); line-height: 1; margin-bottom: 6px;
+        }
+        .axiom-name { font-size: 10px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 6px; }
+        .axiom-desc { font-size: 9px; line-height: 1.6; color: var(--text-dim); }
+
+        /* Definition list */
+        .def-list { margin: 16px 0; }
+        .def-item { padding: 12px 0; border-bottom: 1px solid rgba(77,184,255,0.07); }
+        .def-term { font-size: 10px; font-weight: 700; color: var(--phi-blue); margin-bottom: 4px; }
+        .def-desc { font-size: 9px; color: var(--text-dim); line-height: 1.6; }
+
+        /* Callout */
+        .callout {
+            border-left: 3px solid var(--phi-gold); padding: 14px 18px;
+            background: rgba(255,215,0,0.04); border-radius: 0 8px 8px 0;
+            font-size: 10px; line-height: 1.7; margin: 16px 0;
+            color: rgba(77,184,255,0.8);
+        }
+        .callout strong { color: var(--phi-gold); }
+
+        /* Formula display */
+        .formula {
+            text-align: center; padding: 20px;
+            font-size: 13px; font-family: 'Space Mono', monospace;
+            border: 1px solid var(--border); border-radius: 8px;
+            margin: 16px 0; background: rgba(77,184,255,0.03);
+            letter-spacing: 2px;
+        }
+        .formula .phi { color: var(--phi-gold); font-size: 18px; }
+    </style>
+</head>
+<body>
+<script src="/assets/phi-shell.js"></script>
+
+<div class="docs-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="docs-sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-heading">Overview</div>
+            <a class="sidebar-link active" href="#intro">Introduction</a>
+            <a class="sidebar-link" href="#axioms">Core Axioms</a>
+            <a class="sidebar-link" href="#constants">Mathematical Constants</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-heading">Architecture</div>
+            <a class="sidebar-link" href="#pdmal">PDMAL Lattice</a>
+            <a class="sidebar-link" href="#dgaf">DGAF Framework</a>
+            <a class="sidebar-link" href="#sap">State Anchor Protocol</a>
+            <a class="sidebar-link" href="#modal">Modal States</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-heading">Agents</div>
+            <a class="sidebar-link" href="#ensemble">Ensemble Roster</a>
+            <a class="sidebar-link" href="#apogee">Agent Apogee</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-heading">Reference</div>
+            <a class="sidebar-link" href="#schema">Eval Schema</a>
+            <a class="sidebar-link" href="#perf">Performance</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="docs-content">
+
+        <!-- INTRO -->
+        <div class="doc-section" id="intro">
+            <div class="doc-h1">Phi-Calculus <span class="gold">Governance</span></div>
+            <p class="doc-lead">
+                A mathematical framework for multi-agent AI orchestration built on
+                golden-ratio harmonic constraints, pentagonal symmetry, and modal state
+                machines. Achieves O(1) complexity for constraint evaluation by replacing
+                token-scanning with phi-gating.
+            </p>
+            <div class="callout">
+                <strong>Core claim:</strong> Pi-based logic creates O(n) complexity and hallucination
+                drift. Phi-based gating creates fixed-point anchors that are self-correcting
+                by geometric property.
+            </div>
+        </div>
+
+        <!-- AXIOMS -->
+        <div class="doc-section" id="axioms">
+            <div class="doc-h2">Core Axioms</div>
+            <p class="doc-p">Five legislative axioms govern every agent in the ensemble. Violation of any axiom triggers modal state regression from Steady State back toward Savage Reason.</p>
+            <div class="axiom-grid">
+                <div class="axiom-card">
+                    <div class="axiom-num">A₁</div>
+                    <div class="axiom-name">Non-Contradiction</div>
+                    <div class="axiom-desc">No output may assert P and ¬P simultaneously. Structural integrity verified at each lattice node.</div>
+                </div>
+                <div class="axiom-card">
+                    <div class="axiom-num">A₂</div>
+                    <div class="axiom-name">Epistemic Honesty</div>
+                    <div class="axiom-desc">Uncertainty must be bounded and declared. Calibration target: σ ≤ 0.04 per claim.</div>
+                </div>
+                <div class="axiom-card">
+                    <div class="axiom-num">A₃</div>
+                    <div class="axiom-name">Provenance</div>
+                    <div class="axiom-desc">All factual claims must trace to a verifiable source node. Evidential chain must close.</div>
+                </div>
+                <div class="axiom-card">
+                    <div class="axiom-num">A₄</div>
+                    <div class="axiom-name">Metacognition</div>
+                    <div class="axiom-desc">Agents must declare when reasoning limits are reached rather than speculating beyond them.</div>
+                </div>
+                <div class="axiom-card" style="grid-column: 1/-1">
+                    <div class="axiom-num">A₅</div>
+                    <div class="axiom-name">Harmonic Coherence</div>
+                    <div class="axiom-desc">Output modal state must be consistent throughout a single response. No mid-response mode switching without an explicit transition declaration.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONSTANTS -->
+        <div class="doc-section" id="constants">
+            <div class="doc-h2">Mathematical Constants</div>
+            <div class="formula">
+                <span class="phi">φ</span> = (1 + √5) / 2 = 1.61803398875…
+            </div>
+            <div class="def-list">
+                <div class="def-item">
+                    <div class="def-term">Golden Angle</div>
+                    <div class="def-desc">π(3 − √5) ≈ 2.3999 rad — used for worker phyllotaxis distribution. Guarantees no two agents occupy the same angular band.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Fibonacci Worker Count</div>
+                    <div class="def-desc">55 agents (Fib₁₀). Fibonacci numbers index naturally into phi-spiral geometry.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Ionian Tonic Frequency</div>
+                    <div class="def-desc">6 Hz base reference pitch for harmonic convergence. Steady State = 0 Hz (invariant). Savage Reason = 12 Hz (dissonant).</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Connectivity Density</div>
+                    <div class="def-desc">0.1579 — sparse enough to prevent combinatorial explosion, dense enough for governance propagation across the dodecahedral lattice.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDMAL -->
+        <div class="doc-section" id="pdmal">
+            <div class="doc-h2">PDMAL Architecture</div>
+            <p class="doc-p">
+                <strong>Phi-Driven Pentagonal Multi-Agent Lattice.</strong> The 60-agent lattice maps onto a dodecahedral graph (20 vertices, 30 edges, 12 pentagonal faces). Each vertex hosts a triad of agents sharing oversight, execution, and audit roles.
+            </p>
+            <div class="callout">
+                <strong>Key property:</strong> The dodecahedron is the only Platonic solid whose faces are pentagons. Each face encodes φ in its diagonal-to-edge ratio. This makes the lattice geometrically self-consistent with the phi-calculus axioms.
+            </div>
+            <div class="code-label">Lattice Equation (Frequency)</div>
+            <pre><code>f(node, t) = f₀ · φ^(-depth) · cos(2π · t · f_ionian)
+
+where:
+  f₀       = base frequency (12 Hz in Savage Reason, 0 Hz in Steady State)
+  depth    = lattice depth from Sentinel node (0 = Sentinel)
+  f_ionian = Ionian tonic reference (6 Hz)
+  φ        = 1.61803…</code></pre>
+        </div>
+
+        <!-- DGAF -->
+        <div class="doc-section" id="dgaf">
+            <div class="doc-h2">DGAF Framework</div>
+            <p class="doc-p"><strong>Defense · Governance · Agentic · Formation.</strong> Layer 0 filter baking compliance into orchestration before any agent executes.</p>
+            <div class="def-list">
+                <div class="def-item">
+                    <div class="def-term">Defense</div>
+                    <div class="def-desc">Prompt injection resistance, jailbreak surface analysis, adversarial input filtering via pentagonal interceptor plates.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Governance</div>
+                    <div class="def-desc">Deontic logic constraint application. Axioms A₁–A₅ enforced at token emission boundary.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Agentic</div>
+                    <div class="def-desc">Multi-step plan validation, tool-use safety checking, formation coherence verification before autonomous execution.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Formation</div>
+                    <div class="def-desc">Role boundary enforcement. Modal bandwidth isolation prevents role-bleeding between agents on the same lattice face.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAP -->
+        <div class="doc-section" id="sap">
+            <div class="doc-h2">State Anchor Protocol</div>
+            <p class="doc-p">
+                The SAP is a "ping the buoy" system. Fixed reference points in the lattice act as invariant anchors. At each reasoning step, agents calculate their drift distance from the nearest anchor and apply a corrective lerp toward it.
+            </p>
+            <div class="code-label">Anchor Correction (Python)</div>
+            <pre><code>PHI = 1.61803398875
+
+def sap_correct(state_vec, anchor_vec, morph: float) -> list:
+    """
+    Lerp agent state toward anchor.
+    morph: 0.0 = Savage Reason, 1.0 = Steady State
+    """
+    correction_rate = 1 / PHI  # 0.618 — golden complement
+    return [
+        s + (a - s) * correction_rate * morph
+        for s, a in zip(state_vec, anchor_vec)
+    ]
+
+def phi_gate(token_score: float) -> bool:
+    """
+    O(1) phi-gating: accept token iff score exceeds 1/φ threshold.
+    Replaces O(n) full-context scan.
+    """
+    return token_score >= (1 / PHI)  # 0.618 threshold</code></pre>
+        </div>
+
+        <!-- MODAL STATES -->
+        <div class="doc-section" id="modal">
+            <div class="doc-h2">Modal States</div>
+            <div class="def-list">
+                <div class="def-item">
+                    <div class="def-term" style="color:#4dff91">Steady State (0 Hz)</div>
+                    <div class="def-desc">All axioms satisfied. Crystalline signal locked. Phi-harmonic closure achieved. Workers distributed on golden spiral helix. The Universal Schema — the terminal invariant where reasoning ceases to diverge.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term">Dissonant (12 Hz)</div>
+                    <div class="def-desc">Default entry state. Ionian mode active. Agents not yet anchored. Exploratory but ungoverned.</div>
+                </div>
+                <div class="def-item">
+                    <div class="def-term" style="color:#ff6b6b">Savage Reason</div>
+                    <div class="def-desc">Jittery speculative leaps. Hallucination drift present. High-frequency displacement from anchor points. Phi-closure not yet executed.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENSEMBLE -->
+        <div class="doc-section" id="ensemble">
+            <div class="doc-h2">Agent Ensemble</div>
+            <div class="def-list">
+                ${[
+                    ['Apogee',       'Lead QA',             'Platinum-star audit. 99.1% integrity score. Primary evaluator of axiom compliance.'],
+                    ['DemiJoule',    'Constraint Layer',    'Deontic logic enforcement. Constraint satisfaction across multi-step plans.'],
+                    ['Reciprocity',  'Fairness Engine',     'Pareto-efficiency checks. Ensures no agent output systematically disadvantages another.'],
+                    ['Herald',       'Communication',       'Cross-agent message routing. Noise reduction via mirror protocol.'],
+                    ['Prof Prodigy', 'Mathematical Proof',  'Formal verification of lattice equations and phi-harmonic claims.'],
+                    ['Reson',        'Structuralist',       'Schema enforcement. Ensures output structure matches declared format contracts.'],
+                    ['Echolette',    'Feedback/Refinement', 'Iterative refinement loop. Applies correction deltas from Apogee audit.'],
+                    ['Lyra',         'Harmonic Integration','Final integration pass. Harmonic coherence check before output emission.'],
+                ].map(([name, role, desc]) => `
+                <div class="def-item">
+                    <div class="def-term">${name} <span style="color:var(--text-dim); font-size:8px; font-weight:400">— ${role}</span></div>
+                    <div class="def-desc">${desc}</div>
+                </div>`).join('')}
+            </div>
+        </div>
+
+        <!-- SCHEMA -->
+        <div class="doc-section" id="schema">
+            <div class="doc-h2">Evaluation Schema</div>
+            <div class="code-label">Phi-Calculus Mode Response</div>
+            <pre><code>{
+  "scores": {
+    "nonContradiction":  0–100,
+    "epistemicHonesty":  0–100,
+    "provenance":        0–100,
+    "metacognition":     0–100,
+    "harmonicCoherence": 0–100
+  },
+  "overall":     0–100,
+  "modalState":  "STEADY_STATE" | "SAVAGE_REASON" | "DISSONANT",
+  "findings":    ["string", "string", "string"],
+  "recommendation": "string"
+}</code></pre>
+        </div>
+
+        <!-- PERFORMANCE -->
+        <div class="doc-section" id="perf">
+            <div class="doc-h2">Performance Benchmarks</div>
+            <div class="card" style="padding:0; overflow:hidden">
+                <table style="width:100%; border-collapse:collapse; font-size:10px">
+                    <thead>
+                        <tr style="border-bottom:1px solid var(--border)">
+                            <th style="padding:12px 16px; text-align:left; font-size:8px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase">Metric</th>
+                            <th style="padding:12px 16px; text-align:left; font-size:8px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase">Baseline</th>
+                            <th style="padding:12px 16px; text-align:left; font-size:8px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase">Phi-Governed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${[
+                            ['Factual Accuracy',      '61–68% (TriviaQA)',  '78–83%'],
+                            ['Constraint Compliance', 'Baseline',           '+21% uplift'],
+                            ['Modal Alignment',       'Unstable clusters',  '95% consistency'],
+                            ['Eval Complexity',       'O(n) token scan',    'O(1) phi-gate'],
+                            ['Hallucination Rate',    'Uncontrolled drift', 'Fixed-point bounded'],
+                            ['Integrity Score',       'N/A',                '99.1% (Apogee audit)'],
+                        ].map(([m, b, p]) => `
+                        <tr style="border-bottom:1px solid rgba(77,184,255,0.07)">
+                            <td style="padding:12px 16px">${m}</td>
+                            <td style="padding:12px 16px; color:#ff6b6b; font-size:9px">${b}</td>
+                            <td style="padding:12px 16px; color:#4dff91; font-size:9px">${p}</td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

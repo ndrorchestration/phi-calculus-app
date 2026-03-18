@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "phi-calculus",
+  "functions": {
+    "api/evaluate.js": { "maxDuration": 30 }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/viz",       "dest": "/viz/index.html" },
+    { "src": "/evaluator", "dest": "/evaluator/index.html" },
+    { "src": "/docs",      "dest": "/docs/index.html" },
+    { "src": "/",          "dest": "/index.html" }
+  ],
+  "env": {
+    "ANTHROPIC_API_KEY": "@anthropic_api_key"
+  }
+}

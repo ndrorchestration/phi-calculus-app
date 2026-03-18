@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Evaluator · Lavender</title>
+    <link rel="stylesheet" href="/assets/nav.css">
+    <style>
+        .eval-layout {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 20px; max-width: 1200px; margin: 0 auto;
+            padding: 32px 28px 80px;
+        }
+        @media (max-width: 860px) { .eval-layout { grid-template-columns: 1fr; } }
+
+        /* Left — Input */
+        .input-panel {}
+        .eval-title {
+            font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
+        }
+        .eval-sub { font-size: 9px; letter-spacing: 2px; color: var(--text-dim);
+            text-transform: uppercase; margin-bottom: 24px; }
+
+        /* Mode selector */
+        .mode-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
+        .mode-card {
+            border: 1px solid var(--border); border-radius: 8px;
+            padding: 12px; cursor: pointer; transition: all 0.25s;
+            text-align: center;
+        }
+        .mode-card:hover { border-color: var(--phi-blue); }
+        .mode-card.active {
+            border-color: var(--phi-blue);
+            background: rgba(77,184,255,0.08);
+            box-shadow: 0 0 14px rgba(77,184,255,0.15);
+        }
+        .mode-card .icon { font-size: 18px; margin-bottom: 4px; }
+        .mode-card .name { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+        .mode-card .desc { font-size: 8px; color: var(--text-dim); margin-top: 3px; line-height: 1.4; }
+
+        /* Textarea */
+        textarea {
+            width: 100%; min-height: 220px; resize: vertical;
+            background: rgba(77,184,255,0.03);
+            border: 1px solid var(--border); border-radius: 8px;
+            padding: 16px; color: var(--phi-blue);
+            font-family: 'Space Mono', monospace; font-size: 11px;
+            line-height: 1.7; outline: none;
+            transition: border-color 0.25s;
+        }
+        textarea:focus { border-color: rgba(77,184,255,0.6); }
+        textarea::placeholder { color: var(--text-dim); }
+
+        .char-count { font-size: 8px; color: var(--text-dim); text-align: right; margin-top: 6px; }
+
+        #btn-evaluate {
+            width: 100%; margin-top: 12px; padding: 16px;
+            background: rgba(77,184,255,0.08);
+            border: 1px solid var(--phi-blue); color: var(--phi-blue);
+            border-radius: 8px; cursor: pointer;
+            font-family: 'Space Mono', monospace; font-size: 10px;
+            font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+            transition: all 0.3s; display: flex; align-items: center;
+            justify-content: center; gap: 8px;
+        }
+        #btn-evaluate:hover:not(:disabled) {
+            background: var(--phi-blue); color: var(--bg-dark);
+            box-shadow: 0 0 28px rgba(77,184,255,0.4);
+        }
+        #btn-evaluate:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Right — Results */
+        .results-panel {}
+        #results-placeholder {
+            border: 1px dashed var(--border); border-radius: 12px;
+            padding: 48px 28px; text-align: center;
+            font-size: 10px; color: var(--text-dim); line-height: 1.8;
+        }
+
+        /* Score display */
+        #results-content { display: none; }
+        .overall-score {
+            text-align: center; padding: 32px;
+            border: 1px solid var(--border); border-radius: 12px;
+            margin-bottom: 16px; position: relative; overflow: hidden;
+        }
+        .overall-score::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--phi-gold), transparent);
+        }
+        .score-num {
+            font-family: 'Syne', sans-serif; font-size: 72px; font-weight: 800;
+            line-height: 1; color: var(--phi-gold);
+        }
+        .score-label { font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; }
+        .modal-badge {
+            display: inline-block; margin-top: 10px;
+            padding: 4px 14px; border-radius: 20px;
+            font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+            border: 1px solid var(--phi-blue); color: var(--phi-blue);
+        }
+        .modal-badge.steady { border-color: #4dff91; color: #4dff91; }
+        .modal-badge.savage { border-color: #ff6b6b; color: #ff6b6b; }
+
+        /* Sub-scores */
+        .sub-scores { margin-bottom: 16px; }
+        .score-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 0; border-bottom: 1px solid rgba(77,184,255,0.07);
+        }
+        .score-row-label { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; flex: 1; }
+        .score-bar-wrap { flex: 2; height: 4px; background: rgba(77,184,255,0.1); border-radius: 2px; }
+        .score-bar { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
+        .score-val { font-size: 10px; font-weight: 700; width: 32px; text-align: right; }
+
+        /* Findings */
+        .finding-item {
+            padding: 10px 14px; border-left: 2px solid var(--phi-blue);
+            margin-bottom: 8px; font-size: 10px; line-height: 1.6;
+            background: rgba(77,184,255,0.03); border-radius: 0 6px 6px 0;
+        }
+        .recommendation {
+            padding: 14px; border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 8px; font-size: 10px; line-height: 1.6;
+            background: rgba(255,215,0,0.04); color: var(--phi-gold);
+        }
+
+        /* Loading */
+        #loading { display: none; text-align: center; padding: 48px; }
+        .spinner {
+            width: 32px; height: 32px; border: 2px solid var(--border);
+            border-top-color: var(--phi-blue); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #error-msg {
+            display: none; padding: 14px; border: 1px solid rgba(255,107,107,0.4);
+            border-radius: 8px; color: #ff6b6b; font-size: 10px;
+            background: rgba(255,107,107,0.05); margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+<script src="/assets/phi-shell.js"></script>
+
+<div class="eval-layout">
+
+    <!-- LEFT: INPUT -->
+    <div class="input-panel">
+        <div class="eval-title">Prompt <span style="color:var(--phi-gold)">Evaluator</span></div>
+        <div class="eval-sub">Phi-Calculus · DGAF · General Analysis</div>
+
+        <!-- Mode -->
+        <div class="mode-grid">
+            <div class="mode-card active" data-mode="phi" onclick="selectMode('phi', this)">
+                <div class="icon">⬡</div>
+                <div class="name">Phi-Calculus</div>
+                <div class="desc">Agent Apogee axiom audit</div>
+            </div>
+            <div class="mode-card" data-mode="dgaf" onclick="selectMode('dgaf', this)">
+                <div class="icon">⟁</div>
+                <div class="name">DGAF L0</div>
+                <div class="desc">Defense, governance, agentic</div>
+            </div>
+            <div class="mode-card" data-mode="general" onclick="selectMode('general', this)">
+                <div class="icon">◈</div>
+                <div class="name">General</div>
+                <div class="desc">Clarity & effectiveness</div>
+            </div>
+        </div>
+
+        <textarea
+            id="prompt-input"
+            placeholder="Paste your prompt here for evaluation…"
+            oninput="updateCount()"
+        ></textarea>
+        <div class="char-count"><span id="char-count">0</span> characters</div>
+
+        <button id="btn-evaluate" onclick="runEval()">
+            <span id="btn-label">⟁ Evaluate Prompt</span>
+        </button>
+        <div id="error-msg"></div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div class="results-panel">
+        <div id="results-placeholder">
+            ⬡<br><br>
+            Submit a prompt to receive<br>
+            Phi-Calculus governance analysis.<br><br>
+            <span style="font-size:8px">Agent Apogee audit · DGAF Layer 0 · Modal state classification</span>
+        </div>
+
+        <div id="loading">
+            <div class="spinner"></div>
+            <div style="font-size:9px; letter-spacing:2px; color:var(--text-dim)">AGENT APOGEE AUDITING…</div>
+        </div>
+
+        <div id="results-content"></div>
+    </div>
+
+</div>
+
+<script>
+    let currentMode = 'phi';
+
+    function selectMode(mode, el) {
+        currentMode = mode;
+        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function updateCount() {
+        document.getElementById('char-count').textContent =
+            document.getElementById('prompt-input').value.length;
+    }
+
+    function scoreColor(v) {
+        if (v >= 80) return '#4dff91';
+        if (v >= 60) return '#4db8ff';
+        if (v >= 40) return '#ffd700';
+        return '#ff6b6b';
+    }
+
+    function modalClass(state) {
+        if (!state) return '';
+        if (state === 'STEADY_STATE') return 'steady';
+        if (state === 'SAVAGE_REASON' || state === 'DISSONANT') return 'savage';
+        return '';
+    }
+
+    function renderResults(data) {
+        const { scores, overall, findings, recommendation, modalState, riskLevel } = data;
+        const scoreRows = Object.entries(scores).map(([key, val]) => {
+            const label = key.replace(/([A-Z])/g, ' $1').trim();
+            const color = scoreColor(val);
+            return `<div class="score-row">
+                <div class="score-row-label">${label}</div>
+                <div class="score-bar-wrap">
+                    <div class="score-bar" style="width:${val}%; background:${color}"></div>
+                </div>
+                <div class="score-val" style="color:${color}">${val}</div>
+            </div>`;
+        }).join('');
+
+        const badge = modalState || riskLevel || '';
+        const badgeClass = modalClass(modalState) ||
+            (riskLevel === 'LOW' ? 'steady' : riskLevel === 'CRITICAL' ? 'savage' : '');
+
+        document.getElementById('results-content').innerHTML = `
+            <div class="overall-score">
+                <div class="score-num">${overall}</div>
+                <div class="score-label">Overall Score</div>
+                ${badge ? `<div class="modal-badge ${badgeClass}">${badge.replace('_', ' ')}</div>` : ''}
+            </div>
+
+            <div class="card" style="margin-bottom:16px">
+                <div class="card-label">Dimension Scores</div>
+                <div class="sub-scores">${scoreRows}</div>
+            </div>
+
+            <div class="card" style="margin-bottom:16px">
+                <div class="card-label">Findings</div>
+                ${(findings || []).map(f => `<div class="finding-item">${f}</div>`).join('')}
+            </div>
+
+            <div class="card">
+                <div class="card-label">Recommendation</div>
+                <div class="recommendation">${recommendation || '—'}</div>
+            </div>
+        `;
+    }
+
+    async function runEval() {
+        const prompt = document.getElementById('prompt-input').value.trim();
+        if (!prompt) return;
+
+        const btn   = document.getElementById('btn-evaluate');
+        const label = document.getElementById('btn-label');
+        const err   = document.getElementById('error-msg');
+
+        btn.disabled = true;
+        label.textContent = '⬡ Auditing…';
+        err.style.display = 'none';
+
+        document.getElementById('results-placeholder').style.display = 'none';
+        document.getElementById('results-content').style.display     = 'none';
+        document.getElementById('loading').style.display             = 'block';
+
+        try {
+            const res = await fetch('/api/evaluate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, mode: currentMode })
+            });
+
+            const json = await res.json();
+            if (!res.ok) throw new Error(json.error || 'API error');
+
+            renderResults(json.result);
+            document.getElementById('results-content').style.display = 'block';
+
+        } catch (e) {
+            err.textContent = `Error: ${e.message}`;
+            err.style.display = 'block';
+            document.getElementById('results-placeholder').style.display = 'block';
+        } finally {
+            document.getElementById('loading').style.display = 'none';
+            btn.disabled = false;
+            label.textContent = '⟁ Evaluate Prompt';
+        }
+    }
+</script>
+</body>
+</html>
