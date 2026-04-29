@@ -1,94 +1,90 @@
 # Phi-Calculus App
 
-> **Flickerflash Phi-Harmonic Calculus Explorer**  
-> Interactive visualization and evaluation platform for hendecabonacci sequences, curvature optimization, and modal frequency analysis.  
-> Powered by **DemiJoule** — Flickerflash Mathematical Foundations Agent.
+> **Flickerflash Internal Tool** — IP-protected. DemiJoule mathematical domain. Do not distribute.
 
-[![Status](https://img.shields.io/badge/status-Active%20Internal-blueviolet)](#)
-[![Deploy](https://img.shields.io/badge/deploy-Vercel-black)](#)
-[![License](https://img.shields.io/badge/license-Proprietary-red)](#)
-[![Agent](https://img.shields.io/badge/powered%20by-DemiJoule-8a2be2)](#)
+An interactive application for **phi-harmonic calculus** — exploring hendecabonacci sequences, curvature optimization, and modal frequency analysis. Built as a visual computation tool within the Flickerflash mathematical framework, powered by **Agent DemiJoule**.
 
 ---
 
-## Overview
+## What Is Phi-Calculus?
 
-The **Phi-Calculus App** is an interactive application for exploring the phi-harmonic mathematical frameworks developed within the Flickerflash AI ecosystem. It provides visual and computational interfaces for:
+Phi-calculus is the Flickerflash mathematical framework that formalizes:
 
-- **Hendecabonacci sequences** — higher-order Fibonacci-family progressions anchored to phi (\u03c6)
-- **Curvature optimization** — manifold-informed geometric analysis using golden-ratio constraints
-- **Modal frequency analysis** — harmonic resonance mapping across agent output dimensions
-- **Phi-calculus evaluation** — scoring and verification tooling for DemiJoule-governed mathematical outputs
+- **φ-harmonic sequences** — extensions of Fibonacci/golden ratio into higher-order (11-term) hendecabonacci structures
+- **Curvature optimization** — using phi-weighted manifold geometry for agent decision surfaces
+- **Modal frequency analysis** — harmonic decomposition of multi-agent state spaces
+- **Pentagonal harmonic architecture** — 5-node agent topology derived from phi-geometry
 
-This tool serves as both a research instrument and a demonstration interface for the phi-harmonic architecture underpinning several Flickerflash governance and evaluation frameworks.
+> *DemiJoule is the Flickerflash agent responsible for mathematical foundations, proofs, and phi-framework formalization.*
 
 ---
 
-## Repository Structure
+## Application Structure
 
 ```
 phi-calculus-app/
 └── phi-app/
-    ├── index.html        ← Main application entry point
-    ├── vercel.json       ← Vercel deployment configuration
-    ├── api/              ← Backend API endpoints
-    ├── assets/           ← Static assets (fonts, images, icons)
-    ├── docs/             ← Mathematical documentation and theory notes
-    ├── evaluator/        ← DemiJoule-powered evaluation modules
-    └── viz/              ← Visualization components and chart modules
+    ├── index.html       ← Main application entry point
+    ├── vercel.json      ← Vercel deployment config
+    ├── api/             ← Backend API endpoints
+    ├── assets/          ← Static assets, icons, fonts
+    ├── docs/            ← Mathematical documentation
+    ├── evaluator/       ← Phi-sequence evaluation engine
+    └── viz/             ← Visualization modules (3D phi-harmonic plots)
+```
+
+---
+
+## Deployment
+
+Configured for **Vercel** deployment via `phi-app/vercel.json`.  
+Entry point: `phi-app/index.html`
+
+To run locally:
+```bash
+cd phi-app
+# Open index.html in browser or serve with any static server
+npx serve .
 ```
 
 ---
 
 ## Mathematical Foundation
 
-The phi-calculus framework is built on the following core constructs:
-
-| Construct | Description |
-|-----------|-------------|
-| **\u03c6 (Phi)** | Golden ratio \u2248 1.6180339887 — structural anchor for all sequence generation |
-| **Hendecabonacci Sequences** | 11th-order Fibonacci extension; models high-complexity recursive growth |
-| **Curvature Optimization** | Minimizes deviation from phi-harmonic manifolds across dimensional axes |
-| **Modal Frequency Analysis** | Maps resonance signatures to agent output evaluation dimensions |
-| **Logic Clipping** | High-order Fibonacci kernel-based suppression of reasoning drift |
-
----
-
-## DemiJoule — Mathematical Foundations Agent
-
-**DemiJoule** is the Flickerflash agent responsible for all mathematical foundations, proof verification, and quantitative validation. This application serves as DemiJoule’s primary interactive interface for:
-
-- Generating and validating hendecabonacci sequences
-- Running curvature optimization passes on agent output tensors
-- Producing phi-harmonic scoring for governance evaluation pipelines
-- Interfacing with the Amethyst Governance Eval Stack for quantitative checks
-
----
-
-## Deployment
-
-This application is configured for **Vercel** deployment via `phi-app/vercel.json`.
-
-```bash
-# Local development
-cd phi-app
-# Open index.html in browser or serve via local server
-python -m http.server 8080
-
-# Deploy
-vercel --cwd phi-app
+### Hendecabonacci Sequence
+The 11-term generalization of Fibonacci:
 ```
+H(n) = H(n-1) + H(n-2) + ... + H(n-11)
+```
+Used as the oscillation kernel for harmonic agent state modeling.
+
+### Phi-Weighted Curvature
+Agent decision surfaces are optimized using φ-weighted Riemannian curvature:  
+Minimize deviation from the golden section across state transition manifolds.
 
 ---
 
-## Status & Access
+## Ecosystem Context
 
-**Visibility**: Private — Flickerflash internal IP  
+| Repo | Relationship |
+|------|-------------|
+| [`3d-visualization-hub`](https://github.com/Flickerflash/3d-visualization-hub) | 3D visualization companion (Plotly, Streamlit) |
+| [`DGAF-Framework`](https://github.com/Flickerflash/DGAF-Framework) | Governance layer that uses phi-harmonic scoring |
+| [`Driftwatch`](https://github.com/Flickerflash/Driftwatch) | Drift detection using phi-harmonic state monitoring |
+| [`Amethyst-Governance-Eval-Stack`](https://github.com/Flickerflash/Amethyst-Governance-Eval-Stack) | Eval stack that incorporates phi-calculus scoring |
+
+---
+
+## IP Notice
+
+The phi-calculus framework, hendecabonacci kernel design, and harmonic geometry methodology are original intellectual property of **Njineer / Flickerflash**.  
+Unauthorized reproduction, redistribution, or commercial use is prohibited.
+
+---
+
+**Maintained by**: Njineer ([@Flickerflash](https://github.com/Flickerflash))  
+**Mathematical Authority**: Agent DemiJoule  
+**Language**: HTML / JavaScript  
 **Deployment**: Vercel  
-**Mathematical Authority**: DemiJoule  
-**Governance Integration**: Agent Amethyst / Amethyst Governance Eval Stack  
-**Maintained by**: Njineer / Flickerflash  
-
----
-
-*Part of the Flickerflash AI Governance & Mathematical Foundations Ecosystem*
+**Status**: Active — Internal IP  
+**Last Updated**: April 2026
