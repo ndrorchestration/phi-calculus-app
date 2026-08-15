@@ -3,218 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lavender · Phi-Calculus Governance</title>
+    <title>Phi-Calculus · Experimental Research</title>
     <link rel="stylesheet" href="/assets/nav.css">
     <style>
-        .hero {
-            min-height: calc(100vh - 52px);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: flex-start;
-            padding: 0 28px; max-width: 1200px; margin: 0 auto;
-        }
-        .hero-eyebrow {
-            font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-            color: var(--text-dim); margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .hero-eyebrow::before {
-            content: ''; display: block;
-            width: 32px; height: 1px; background: var(--phi-blue);
-        }
-        .hero-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(40px, 7vw, 88px);
-            font-weight: 800; line-height: 0.95;
-            letter-spacing: -1px; text-transform: uppercase;
-            margin-bottom: 24px;
-        }
-        .hero-title .gold { color: var(--phi-gold); }
-        .hero-title .dim  { color: var(--text-dim); }
-        .hero-desc {
-            font-size: 11px; line-height: 1.9;
-            color: var(--text-dim); max-width: 520px;
-            margin-bottom: 40px;
-        }
-        .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-
-        /* Stat grid */
-        .stat-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 16px; margin-top: 80px;
-        }
-        @media (max-width: 640px) { .stat-grid { grid-template-columns: 1fr; } }
-        .stat-card {
-            border: 1px solid var(--border); border-radius: 10px;
-            padding: 24px; position: relative; overflow: hidden;
-        }
-        .stat-card::before {
-            content: ''; position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--phi-blue), transparent);
-        }
-        .stat-num {
-            font-family: 'Syne', sans-serif;
-            font-size: 42px; font-weight: 800;
-            line-height: 1; margin-bottom: 6px;
-        }
-        .stat-num.gold { color: var(--phi-gold); }
-        .stat-label { font-size: 9px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
-        .stat-desc  { font-size: 9px; line-height: 1.6; color: var(--text-dim); margin-top: 10px; }
-
-        /* Agent list */
-        .agent-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 10px; margin-top: 16px;
-        }
-        @media (max-width: 640px) { .agent-grid { grid-template-columns: repeat(2,1fr); } }
-        .agent-chip {
-            border: 1px solid var(--border); border-radius: 8px;
-            padding: 14px; font-size: 9px; letter-spacing: 1px;
-        }
-        .agent-name { font-weight: 700; margin-bottom: 4px; }
-        .agent-role { color: var(--text-dim); font-size: 8px; }
-
-        /* Section layout */
-        .section { max-width: 1200px; margin: 0 auto; padding: 0 28px 80px; }
-        .section-title {
-            font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700;
-            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
-        }
-        .section-sub {
-            font-size: 9px; letter-spacing: 2px; color: var(--text-dim);
-            text-transform: uppercase; margin-bottom: 28px;
-        }
-
-        /* Phi comparison table */
-        .compare-table { width: 100%; border-collapse: collapse; font-size: 10px; }
-        .compare-table th {
-            text-align: left; padding: 10px 14px; font-size: 8px;
-            letter-spacing: 2px; text-transform: uppercase;
-            border-bottom: 1px solid var(--border); color: var(--text-dim);
-        }
-        .compare-table td { padding: 12px 14px; border-bottom: 1px solid rgba(77,184,255,0.07); }
-        .compare-table tr:hover td { background: rgba(77,184,255,0.03); }
-        .tag-bad  { color: #ff6b6b; font-size: 8px; }
-        .tag-good { color: #4dff91; font-size: 8px; }
-
-        .footer {
-            border-top: 1px solid var(--border); padding: 28px;
-            text-align: center; font-size: 9px; color: var(--text-dim);
-            letter-spacing: 2px;
-        }
+        .hero { min-height: calc(100vh - 52px); display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:0 28px; max-width:1200px; margin:0 auto; }
+        .hero-eyebrow { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--text-dim); margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+        .hero-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--phi-blue); }
+        .hero-title { font-family:'Syne',sans-serif; font-size:clamp(40px,7vw,88px); font-weight:800; line-height:.95; letter-spacing:-1px; text-transform:uppercase; margin-bottom:24px; }
+        .hero-title .gold { color:var(--phi-gold); } .hero-title .dim { color:var(--text-dim); }
+        .hero-desc { font-size:11px; line-height:1.9; color:var(--text-dim); max-width:520px; margin-bottom:40px; }
+        .hero-cta { display:flex; gap:12px; flex-wrap:wrap; }
+        .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:80px; }
+        @media (max-width:640px) { .stat-grid { grid-template-columns:1fr; } }
+        .stat-card { border:1px solid var(--border); border-radius:10px; padding:24px; position:relative; overflow:hidden; }
+        .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--phi-blue),transparent); }
+        .stat-num { font-family:'Syne',sans-serif; font-size:42px; font-weight:800; line-height:1; margin-bottom:6px; }
+        .stat-num.gold { color:var(--phi-gold); } .stat-label { font-size:9px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; } .stat-desc { font-size:9px; line-height:1.6; color:var(--text-dim); margin-top:10px; }
+        .agent-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px; }
+        @media (max-width:640px) { .agent-grid { grid-template-columns:repeat(2,1fr); } }
+        .agent-chip { border:1px solid var(--border); border-radius:8px; padding:14px; font-size:9px; letter-spacing:1px; }
+        .agent-name { font-weight:700; margin-bottom:4px; } .agent-role { color:var(--text-dim); font-size:8px; }
+        .section { max-width:1200px; margin:0 auto; padding:0 28px 80px; }
+        .section-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+        .section-sub { font-size:9px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; margin-bottom:28px; }
+        .compare-table { width:100%; border-collapse:collapse; font-size:10px; } .compare-table th { text-align:left; padding:10px 14px; font-size:8px; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid var(--border); color:var(--text-dim); } .compare-table td { padding:12px 14px; border-bottom:1px solid rgba(77,184,255,.07); } .compare-table tr:hover td { background:rgba(77,184,255,.03); }
+        .tag-bad { color:#ff6b6b; font-size:8px; } .tag-good { color:#4dff91; font-size:8px; }
+        .footer { border-top:1px solid var(--border); padding:28px; text-align:center; font-size:9px; color:var(--text-dim); letter-spacing:2px; }
     </style>
 </head>
 <body>
 <script src="/assets/phi-shell.js"></script>
 
-<!-- HERO -->
 <section class="hero">
-    <div class="hero-eyebrow">Phi-Calculus · AI Governance Framework</div>
-    <h1 class="hero-title">
-        Beyond<br>
-        <span class="gold">Pi-Based</span><br>
-        <span class="dim">Logic</span>
-    </h1>
-    <p class="hero-desc">
-        A multi-agent orchestration architecture built on golden-ratio harmonic constraints,
-        pentagonal symmetry, and modal state machines — achieving 21% compliance uplift
-        and 95% modal alignment over standard LLM baselines.
-    </p>
+    <div class="hero-eyebrow">Phi-Calculus · Experimental Research</div>
+    <h1 class="hero-title">Beyond<br><span class="gold">Pi-Based</span><br><span class="dim">Exploration</span></h1>
+    <p class="hero-desc">An interactive research surface for exploring phi-related sequences, geometric constructions, modal-frequency visualizations, and project-defined state models. Numerical performance and governance claims require reproducible evidence.</p>
     <div class="hero-cta">
         <a class="btn btn-gold" href="/viz/">◈ Launch Visualization</a>
         <a class="btn" href="/evaluator/">⟁ Evaluate a Prompt</a>
         <a class="btn" href="/docs/">≡ Read the Docs</a>
     </div>
-
-    <!-- Stats -->
     <div class="stat-grid" style="width:100%">
-        <div class="stat-card">
-            <div class="stat-num gold">21%</div>
-            <div class="stat-label">Compliance Uplift</div>
-            <div class="stat-desc">Phi-harmonic constraints convert exploratory optimization into hard governance.</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-num">95%</div>
-            <div class="stat-label">Modal Alignment</div>
-            <div class="stat-desc">Ionian tonic locking achieves crystalline signal stability vs unstable clusters.</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-num gold">φ</div>
-            <div class="stat-label">1.61803… / O(1)</div>
-            <div class="stat-desc">Golden-ratio gating replaces O(n) token scanning with constant-time anchoring.</div>
-        </div>
+        <div class="stat-card"><div class="stat-num gold">φ</div><div class="stat-label">Golden Ratio</div><div class="stat-desc">A mathematical constant used by the project's experimental geometry and sequence explorations.</div></div>
+        <div class="stat-card"><div class="stat-num">11</div><div class="stat-label">Recurrence Order</div><div class="stat-desc">The order of the project's hendecabonacci recurrence experiment.</div></div>
+        <div class="stat-card"><div class="stat-num gold">∞</div><div class="stat-label">Research Space</div><div class="stat-desc">Visual exploration of modeled sequences, geometry, and state-space relationships.</div></div>
     </div>
 </section>
 
-<!-- AGENTS -->
 <section class="section">
     <div class="section-title">Agent Ensemble</div>
-    <div class="section-sub">Primary Pentagonal System · 8 Specialized Agents</div>
+    <div class="section-sub">Project-local research personas · 8 roles</div>
     <div class="agent-grid">
         ${[
-            ['Apogee',       'Lead QA / Audit',        '#4db8ff'],
-            ['DemiJoule',    'Constraint Layer',        '#4db8ff'],
-            ['Reciprocity',  'Fairness Engine',         '#4db8ff'],
-            ['Herald',       'Communication',           '#4db8ff'],
-            ['Prof Prodigy', 'Mathematical Proof',      '#ffd700'],
-            ['Reson',        'Structuralist',           '#4db8ff'],
-            ['Echolette',    'Feedback / Refinement',   '#4db8ff'],
-            ['Lyra',         'Harmonic Integration',    '#ffd700'],
-        ].map(([name, role, color]) => `
-        <div class="agent-chip" style="border-color:${color}22">
-            <div class="agent-name" style="color:${color}">${name}</div>
-            <div class="agent-role">${role}</div>
-        </div>`).join('')}
+            ['Apogee','Lead QA / Audit'],['DemiJoule','Constraint Research'],['Reciprocity','Fairness Research'],['Herald','Communication'],
+            ['Prof Prodigy','Mathematical Research'],['Reson','Structural Analysis'],['Echolette','Feedback / Refinement'],['Lyra','Harmonic Integration']
+        ].map(([name, role]) => `
+        <div class="agent-chip"><div class="agent-name">${name}</div><div class="agent-role">${role}</div></div>`).join('')}
     </div>
 </section>
 
-<!-- COMPARISON -->
 <section class="section">
-    <div class="section-title">Pi vs Phi</div>
-    <div class="section-sub">Performance Comparison</div>
+    <div class="section-title">Research Boundaries</div>
+    <div class="section-sub">Claims require evidence</div>
     <div class="card" style="padding:0; overflow:hidden">
         <table class="compare-table">
-            <thead>
-                <tr>
-                    <th>Metric</th>
-                    <th>Pi-Based Baseline</th>
-                    <th>Phi-Calculus Governed</th>
-                </tr>
-            </thead>
+            <thead><tr><th>Topic</th><th>Current interpretation</th><th>Evidence state</th></tr></thead>
             <tbody>
-                <tr>
-                    <td>Factual Accuracy</td>
-                    <td class="tag-bad">61–68% (TriviaQA)</td>
-                    <td class="tag-good">78–83%</td>
-                </tr>
-                <tr>
-                    <td>Constraint Compliance</td>
-                    <td class="tag-bad">Baseline</td>
-                    <td class="tag-good">+21% improvement</td>
-                </tr>
-                <tr>
-                    <td>Modal Alignment</td>
-                    <td class="tag-bad">Unstable clusters</td>
-                    <td class="tag-good">95% consistency</td>
-                </tr>
-                <tr>
-                    <td>Complexity</td>
-                    <td class="tag-bad">O(n) token scanning</td>
-                    <td class="tag-good">O(1) phi-gating</td>
-                </tr>
-                <tr>
-                    <td>Hallucination Drift</td>
-                    <td class="tag-bad">Jittery speculative leaps</td>
-                    <td class="tag-good">Fixed-point anchoring</td>
-                </tr>
+                <tr><td>Hendecabonacci</td><td>Defined 11th-order recurrence</td><td class="tag-good">Mathematical construction</td></tr>
+                <tr><td>Phi-weighted geometry</td><td>Project-defined experimental calculations</td><td class="tag-good">Implementation-dependent</td></tr>
+                <tr><td>Compliance uplift</td><td>Historical/project claim</td><td class="tag-bad">Not currently established</td></tr>
+                <tr><td>Modal alignment</td><td>Historical/project claim</td><td class="tag-bad">Not currently established</td></tr>
+                <tr><td>O(1) phi-gating</td><td>Historical/project claim</td><td class="tag-bad">Not currently established</td></tr>
+                <tr><td>Hallucination/fixed-point effects</td><td>Research hypothesis</td><td class="tag-bad">Requires experiment</td></tr>
             </tbody>
         </table>
     </div>
 </section>
 
-<div class="footer">
-    LAVΞNDER · PHI-CALCULUS GOVERNANCE FRAMEWORK · PDMAL ARCHITECTURE · v2.0
-</div>
-
+<div class="footer">PHI-CALCULUS · EXPERIMENTAL RESEARCH · EVIDENCE-BOUNDED</div>
 </body>
 </html>
