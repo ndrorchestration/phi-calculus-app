@@ -24,4 +24,4 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-_Maintained by ndrorchestration | DGAF-certified | Governed by Agent Amethyst_
+_Maintained by ndrorchestration. Historical changelog attribution retained for provenance; current repository documentation treats DGAF and Agent Amethyst as project-local related terminology, not external certification or governance authority._
