@@ -1,90 +1,81 @@
 # Phi-Calculus App
 
-> **Flickerflash Internal Tool** — IP-protected. DemiJoule mathematical domain. Do not distribute.
+> **Internal experimental research tool.** This README describes the repository's intended mathematical and visualization scope; mathematical validity and performance claims require reproducible evidence in the source or accompanying documentation.
 
-An interactive application for **phi-harmonic calculus** — exploring hendecabonacci sequences, curvature optimization, and modal frequency analysis. Built as a visual computation tool within the Flickerflash mathematical framework, powered by **Agent DemiJoule**.
+An interactive application for exploring phi-related sequences, curvature/geometry experiments, and modal-frequency visualizations within the project's research framework. Built as a visual computation tool with the DemiJoule agent persona used for mathematical-development workflows.
 
----
+## What is Phi-Calculus?
 
-## What Is Phi-Calculus?
+In this repository, **phi-calculus** is a project-defined mathematical/research vocabulary covering:
 
-Phi-calculus is the Flickerflash mathematical framework that formalizes:
+- phi-related sequence experiments;
+- higher-order recurrence structures, including the project's hendecabonacci experiments;
+- curvature and manifold visualizations;
+- modal-frequency analysis of modeled state spaces.
 
-- **φ-harmonic sequences** — extensions of Fibonacci/golden ratio into higher-order (11-term) hendecabonacci structures
-- **Curvature optimization** — using phi-weighted manifold geometry for agent decision surfaces
-- **Modal frequency analysis** — harmonic decomposition of multi-agent state spaces
-- **Pentagonal harmonic architecture** — 5-node agent topology derived from phi-geometry
-
-> *DemiJoule is the Flickerflash agent responsible for mathematical foundations, proofs, and phi-framework formalization.*
-
----
+These are project-defined constructs unless a specific mathematical result is independently derived and cited. The use of terms such as *curvature*, *harmonic*, or *phi-weighted* does not by itself establish equivalence to a standard mathematical theory.
 
 ## Application Structure
 
-```
+```text
 phi-calculus-app/
 └── phi-app/
-    ├── index.html       ← Main application entry point
-    ├── vercel.json      ← Vercel deployment config
-    ├── api/             ← Backend API endpoints
-    ├── assets/          ← Static assets, icons, fonts
-    ├── docs/            ← Mathematical documentation
-    ├── evaluator/       ← Phi-sequence evaluation engine
-    └── viz/             ← Visualization modules (3D phi-harmonic plots)
+    ├── index.html
+    ├── vercel.json
+    ├── api/
+    ├── assets/
+    ├── docs/
+    ├── evaluator/
+    └── viz/
 ```
-
----
 
 ## Deployment
 
-Configured for **Vercel** deployment via `phi-app/vercel.json`.  
-Entry point: `phi-app/index.html`
+Configured for Vercel deployment via `phi-app/vercel.json`.
 
 To run locally:
+
 ```bash
 cd phi-app
-# Open index.html in browser or serve with any static server
 npx serve .
 ```
 
----
+## Mathematical Boundary
 
-## Mathematical Foundation
+### Hendecabonacci sequence
 
-### Hendecabonacci Sequence
-The 11-term generalization of Fibonacci:
-```
+The repository experiments with the 11th-order recurrence:
+
+```text
 H(n) = H(n-1) + H(n-2) + ... + H(n-11)
 ```
-Used as the oscillation kernel for harmonic agent state modeling.
 
-### Phi-Weighted Curvature
-Agent decision surfaces are optimized using φ-weighted Riemannian curvature:  
-Minimize deviation from the golden section across state transition manifolds.
+The recurrence itself is a defined mathematical construction. Any claim that it is a validated oscillation kernel, optimal architecture, or physically meaningful model requires separate evidence.
 
----
+### Phi-weighted geometry
+
+Phi-weighted geometric calculations and visualizations are experimental constructs in this repository. They should not be represented as established Riemannian optimization results without a derivation and validation appropriate to the specific claim.
 
 ## Ecosystem Context
 
-| Repo | Relationship |
-|------|-------------|
-| [`3d-visualization-hub`](https://github.com/Flickerflash/3d-visualization-hub) | 3D visualization companion (Plotly, Streamlit) |
-| [`DGAF-Framework`](https://github.com/Flickerflash/DGAF-Framework) | Governance layer that uses phi-harmonic scoring |
-| [`Driftwatch`](https://github.com/Flickerflash/Driftwatch) | Drift detection using phi-harmonic state monitoring |
-| [`Amethyst-Governance-Eval-Stack`](https://github.com/Flickerflash/Amethyst-Governance-Eval-Stack) | Eval stack that incorporates phi-calculus scoring |
+Related repositories may integrate with or reference this work, but repository relationships do not establish mathematical equivalence or validation.
 
----
+| Repository | Relationship |
+|---|---|
+| `3d-visualization-hub` | Visualization companion |
+| `DGAF-Framework` | Separate governance/evaluation track |
+| `Driftwatch` | Separate drift-detection track |
+| `Amethyst-Governance-Eval-Stack` | Separate evaluation track |
 
-## IP Notice
+## IP / Distribution
 
-The phi-calculus framework, hendecabonacci kernel design, and harmonic geometry methodology are original intellectual property of **Njineer / Flickerflash**.  
-Unauthorized reproduction, redistribution, or commercial use is prohibited.
+This repository may contain project-specific intellectual property. Consult the repository license and applicable notices for the authoritative distribution terms. The README does not itself create legal restrictions beyond those terms.
 
----
+## Status
 
-**Maintained by**: Njineer ([@Flickerflash](https://github.com/Flickerflash))  
-**Mathematical Authority**: Agent DemiJoule  
-**Language**: HTML / JavaScript  
-**Deployment**: Vercel  
-**Status**: Active — Internal IP  
-**Last Updated**: April 2026
+**Active — internal experimental research.**
+
+Current mathematical, performance, and deployment claims should be established from the implementation, tests, derivations, and dated evidence rather than from agent-role descriptions or historical README language.
+
+**Maintained by:** `ndrorchestration`
+**Deployment:** Vercel
