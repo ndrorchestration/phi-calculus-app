@@ -28,6 +28,9 @@ jobs:
           test -s phi-app/viz/index.html
           test -s phi-app/evaluator/index.html
           test -s phi-app/docs/index.html
+          grep -q '"source": "/viz/"' vercel.json
+          grep -q '"source": "/evaluator/"' vercel.json
+          grep -q '"source": "/docs/"' vercel.json
 
       - name: Verify evaluator JavaScript syntax
         run: |
@@ -39,6 +42,13 @@ jobs:
           grep -q "MODEL_HEURISTIC" api/evaluate.js
           grep -q "not certification" phi-app/evaluator/index.html
           grep -q "Dynamic Governance Agentic Formation" api/evaluate.js
+          grep -q "SIMULATION / PROJECT-LOCAL MODEL / NOT VALIDATION" phi-app/viz/index.html
+          grep -q "not an empirical sample size" phi-app/index.html
+          ! grep -q '99.1%' phi-app/viz/index.html
+          ! grep -q 'COMPLIANCE UPLIFT' phi-app/viz/index.html
+          ! grep -q '5/5 VERIFIED' phi-app/viz/index.html
+          ! grep -q 'Calibration achieved' phi-app/viz/index.html
+          ! grep -Fq '${[' phi-app/index.html
 
   python-tests:
     runs-on: ubuntu-latest
