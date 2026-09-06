@@ -44,11 +44,19 @@ jobs:
           grep -q "Dynamic Governance Agentic Formation" api/evaluate.js
           grep -q "SIMULATION / PROJECT-LOCAL MODEL / NOT VALIDATION" phi-app/viz/index.html
           grep -q "not an empirical sample size" phi-app/index.html
+          grep -q "Not established; historical/project hypothesis" phi-app/docs/index.html
+          grep -q "DGAF = Dynamic Governance Agentic Formation" phi-app/docs/index.html
           ! grep -q '99.1%' phi-app/viz/index.html
           ! grep -q 'COMPLIANCE UPLIFT' phi-app/viz/index.html
           ! grep -q '5/5 VERIFIED' phi-app/viz/index.html
           ! grep -q 'Calibration achieved' phi-app/viz/index.html
           ! grep -Fq '${[' phi-app/index.html
+          ! grep -Fq '${[' phi-app/docs/index.html
+          ! grep -q 'Defense · Governance · Agentic · Formation' phi-app/docs/index.html
+          ! grep -q 'Achieves O(1)' phi-app/docs/index.html
+          ! grep -q '99.1%' phi-app/docs/index.html
+          ! grep -q '+21% uplift' phi-app/docs/index.html
+          ! grep -q '95% consistency' phi-app/docs/index.html
 
   python-tests:
     runs-on: ubuntu-latest
