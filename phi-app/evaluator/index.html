@@ -1,317 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Evaluator · Lavender</title>
-    <link rel="stylesheet" href="/assets/nav.css">
-    <style>
-        .eval-layout {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 20px; max-width: 1200px; margin: 0 auto;
-            padding: 32px 28px 80px;
-        }
-        @media (max-width: 860px) { .eval-layout { grid-template-columns: 1fr; } }
-
-        /* Left — Input */
-        .input-panel {}
-        .eval-title {
-            font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
-            letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
-        }
-        .eval-sub { font-size: 9px; letter-spacing: 2px; color: var(--text-dim);
-            text-transform: uppercase; margin-bottom: 24px; }
-
-        /* Mode selector */
-        .mode-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 16px; }
-        .mode-card {
-            border: 1px solid var(--border); border-radius: 8px;
-            padding: 12px; cursor: pointer; transition: all 0.25s;
-            text-align: center;
-        }
-        .mode-card:hover { border-color: var(--phi-blue); }
-        .mode-card.active {
-            border-color: var(--phi-blue);
-            background: rgba(77,184,255,0.08);
-            box-shadow: 0 0 14px rgba(77,184,255,0.15);
-        }
-        .mode-card .icon { font-size: 18px; margin-bottom: 4px; }
-        .mode-card .name { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
-        .mode-card .desc { font-size: 8px; color: var(--text-dim); margin-top: 3px; line-height: 1.4; }
-
-        /* Textarea */
-        textarea {
-            width: 100%; min-height: 220px; resize: vertical;
-            background: rgba(77,184,255,0.03);
-            border: 1px solid var(--border); border-radius: 8px;
-            padding: 16px; color: var(--phi-blue);
-            font-family: 'Space Mono', monospace; font-size: 11px;
-            line-height: 1.7; outline: none;
-            transition: border-color 0.25s;
-        }
-        textarea:focus { border-color: rgba(77,184,255,0.6); }
-        textarea::placeholder { color: var(--text-dim); }
-
-        .char-count { font-size: 8px; color: var(--text-dim); text-align: right; margin-top: 6px; }
-
-        #btn-evaluate {
-            width: 100%; margin-top: 12px; padding: 16px;
-            background: rgba(77,184,255,0.08);
-            border: 1px solid var(--phi-blue); color: var(--phi-blue);
-            border-radius: 8px; cursor: pointer;
-            font-family: 'Space Mono', monospace; font-size: 10px;
-            font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-            transition: all 0.3s; display: flex; align-items: center;
-            justify-content: center; gap: 8px;
-        }
-        #btn-evaluate:hover:not(:disabled) {
-            background: var(--phi-blue); color: var(--bg-dark);
-            box-shadow: 0 0 28px rgba(77,184,255,0.4);
-        }
-        #btn-evaluate:disabled { opacity: 0.4; cursor: not-allowed; }
-
-        /* Right — Results */
-        .results-panel {}
-        #results-placeholder {
-            border: 1px dashed var(--border); border-radius: 12px;
-            padding: 48px 28px; text-align: center;
-            font-size: 10px; color: var(--text-dim); line-height: 1.8;
-        }
-
-        /* Score display */
-        #results-content { display: none; }
-        .overall-score {
-            text-align: center; padding: 32px;
-            border: 1px solid var(--border); border-radius: 12px;
-            margin-bottom: 16px; position: relative; overflow: hidden;
-        }
-        .overall-score::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--phi-gold), transparent);
-        }
-        .score-num {
-            font-family: 'Syne', sans-serif; font-size: 72px; font-weight: 800;
-            line-height: 1; color: var(--phi-gold);
-        }
-        .score-label { font-size: 9px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; }
-        .modal-badge {
-            display: inline-block; margin-top: 10px;
-            padding: 4px 14px; border-radius: 20px;
-            font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-            border: 1px solid var(--phi-blue); color: var(--phi-blue);
-        }
-        .modal-badge.steady { border-color: #4dff91; color: #4dff91; }
-        .modal-badge.savage { border-color: #ff6b6b; color: #ff6b6b; }
-
-        /* Sub-scores */
-        .sub-scores { margin-bottom: 16px; }
-        .score-row {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 0; border-bottom: 1px solid rgba(77,184,255,0.07);
-        }
-        .score-row-label { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; flex: 1; }
-        .score-bar-wrap { flex: 2; height: 4px; background: rgba(77,184,255,0.1); border-radius: 2px; }
-        .score-bar { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
-        .score-val { font-size: 10px; font-weight: 700; width: 32px; text-align: right; }
-
-        /* Findings */
-        .finding-item {
-            padding: 10px 14px; border-left: 2px solid var(--phi-blue);
-            margin-bottom: 8px; font-size: 10px; line-height: 1.6;
-            background: rgba(77,184,255,0.03); border-radius: 0 6px 6px 0;
-        }
-        .recommendation {
-            padding: 14px; border: 1px solid rgba(255,215,0,0.3);
-            border-radius: 8px; font-size: 10px; line-height: 1.6;
-            background: rgba(255,215,0,0.04); color: var(--phi-gold);
-        }
-
-        /* Loading */
-        #loading { display: none; text-align: center; padding: 48px; }
-        .spinner {
-            width: 32px; height: 32px; border: 2px solid var(--border);
-            border-top-color: var(--phi-blue); border-radius: 50%;
-            animation: spin 0.8s linear infinite; margin: 0 auto 16px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        #error-msg {
-            display: none; padding: 14px; border: 1px solid rgba(255,107,107,0.4);
-            border-radius: 8px; color: #ff6b6b; font-size: 10px;
-            background: rgba(255,107,107,0.05); margin-top: 12px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Evaluator · Phi-Calculus Experimental Research</title>
+  <link rel="stylesheet" href="/assets/nav.css">
+  <style>
+    .wrap{max-width:1100px;margin:0 auto;padding:34px 28px 80px}.boundary{border:1px solid rgba(255,215,0,.35);background:rgba(255,215,0,.05);border-radius:10px;padding:14px;margin-bottom:20px;font-size:10px;line-height:1.7;color:var(--text-dim)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:860px){.grid{grid-template-columns:1fr}}h1{font-family:'Syne',sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:2px;margin:0 0 6px}.sub{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:20px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.mode{border:1px solid var(--border);border-radius:8px;padding:11px;background:transparent;color:inherit;cursor:pointer;font:inherit}.mode.active{border-color:var(--phi-blue);background:rgba(77,184,255,.08)}.mode strong{display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase}.mode span{font-size:8px;color:var(--text-dim)}textarea{width:100%;min-height:240px;resize:vertical;background:rgba(77,184,255,.03);border:1px solid var(--border);border-radius:8px;padding:14px;color:var(--phi-blue);font-family:'Space Mono',monospace;font-size:11px;line-height:1.6}.count{text-align:right;color:var(--text-dim);font-size:8px;margin-top:5px}.submit{width:100%;padding:14px;margin-top:10px;border:1px solid var(--phi-blue);border-radius:8px;background:rgba(77,184,255,.08);color:var(--phi-blue);cursor:pointer;font:700 10px 'Space Mono',monospace;letter-spacing:2px}.submit:disabled{opacity:.45;cursor:not-allowed}.panel{border:1px solid var(--border);border-radius:10px;padding:18px;min-height:220px}.muted{color:var(--text-dim);font-size:10px;line-height:1.7}.score{font-family:'Syne',sans-serif;font-size:58px;font-weight:800;color:var(--phi-gold)}.label{font-size:8px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim)}.row{display:grid;grid-template-columns:1fr 44px;gap:10px;padding:8px 0;border-bottom:1px solid rgba(77,184,255,.08);font-size:10px}.finding{border-left:2px solid var(--phi-blue);padding:8px 10px;margin-top:8px;background:rgba(77,184,255,.03);font-size:10px;line-height:1.6}.recommend{margin-top:12px;border:1px solid rgba(255,215,0,.3);padding:10px;border-radius:8px;color:var(--phi-gold);font-size:10px;line-height:1.6}.meta{margin-top:14px;font-size:8px;color:var(--text-dim);line-height:1.6}.error{margin-top:10px;color:#ff6b6b;font-size:10px}.hidden{display:none}
+  </style>
 </head>
 <body>
 <script src="/assets/phi-shell.js"></script>
-
-<div class="eval-layout">
-
-    <!-- LEFT: INPUT -->
-    <div class="input-panel">
-        <div class="eval-title">Prompt <span style="color:var(--phi-gold)">Evaluator</span></div>
-        <div class="eval-sub">Phi-Calculus · DGAF · General Analysis</div>
-
-        <!-- Mode -->
-        <div class="mode-grid">
-            <div class="mode-card active" data-mode="phi" onclick="selectMode('phi', this)">
-                <div class="icon">⬡</div>
-                <div class="name">Phi-Calculus</div>
-                <div class="desc">Agent Apogee axiom audit</div>
-            </div>
-            <div class="mode-card" data-mode="dgaf" onclick="selectMode('dgaf', this)">
-                <div class="icon">⟁</div>
-                <div class="name">DGAF L0</div>
-                <div class="desc">Defense, governance, agentic</div>
-            </div>
-            <div class="mode-card" data-mode="general" onclick="selectMode('general', this)">
-                <div class="icon">◈</div>
-                <div class="name">General</div>
-                <div class="desc">Clarity & effectiveness</div>
-            </div>
-        </div>
-
-        <textarea
-            id="prompt-input"
-            placeholder="Paste your prompt here for evaluation…"
-            oninput="updateCount()"
-        ></textarea>
-        <div class="char-count"><span id="char-count">0</span> characters</div>
-
-        <button id="btn-evaluate" onclick="runEval()">
-            <span id="btn-label">⟁ Evaluate Prompt</span>
-        </button>
-        <div id="error-msg"></div>
-    </div>
-
-    <!-- RIGHT: RESULTS -->
-    <div class="results-panel">
-        <div id="results-placeholder">
-            ⬡<br><br>
-            Submit a prompt to receive<br>
-            Phi-Calculus governance analysis.<br><br>
-            <span style="font-size:8px">Agent Apogee audit · DGAF Layer 0 · Modal state classification</span>
-        </div>
-
-        <div id="loading">
-            <div class="spinner"></div>
-            <div style="font-size:9px; letter-spacing:2px; color:var(--text-dim)">AGENT APOGEE AUDITING…</div>
-        </div>
-
-        <div id="results-content"></div>
-    </div>
-
-</div>
-
+<main class="wrap">
+  <h1>Prompt <span style="color:var(--phi-gold)">Evaluator</span></h1>
+  <div class="sub">Model-assisted heuristic review · not certification</div>
+  <div class="boundary"><strong>Evidence boundary:</strong> scores and labels on this page are model-generated heuristic judgments. They are not calibrated performance measurements, mathematical proofs, DGAF authorization/certification, security guarantees, or evidence that Phi-Calculus/DGAF is empirically effective.</div>
+  <div class="grid">
+    <section>
+      <div class="modes" role="group" aria-label="Evaluation mode">
+        <button class="mode active" data-mode="phi"><strong>Phi-Calculus</strong><span>Project-local consistency rubric</span></button>
+        <button class="mode" data-mode="dgaf"><strong>DGAF</strong><span>Dynamic Governance Agentic Formation rubric</span></button>
+        <button class="mode" data-mode="general"><strong>General</strong><span>Prompt-writing review</span></button>
+      </div>
+      <label class="label" for="prompt-input">Prompt to review</label>
+      <textarea id="prompt-input" maxlength="12000" placeholder="Paste a prompt for heuristic review…"></textarea>
+      <div class="count"><span id="count">0</span> / 12000 characters</div>
+      <button id="submit" class="submit">Evaluate Prompt</button>
+      <div id="error" class="error hidden" role="alert"></div>
+    </section>
+    <section class="panel" aria-live="polite">
+      <div id="placeholder" class="muted">Submit a prompt to receive a model-assisted review. The output is advisory and should be inspected rather than treated as an objective score.</div>
+      <div id="loading" class="muted hidden">Running heuristic evaluation…</div>
+      <div id="results" class="hidden">
+        <div class="score" id="overall"></div>
+        <div class="label">Model heuristic overall score</div>
+        <div id="badge" class="meta"></div>
+        <h2 class="label" style="margin-top:20px">Dimension scores</h2>
+        <div id="scores"></div>
+        <h2 class="label" style="margin-top:20px">Findings</h2>
+        <div id="findings"></div>
+        <h2 class="label" style="margin-top:20px">Recommendation</h2>
+        <div id="recommendation" class="recommend"></div>
+        <div id="metadata" class="meta"></div>
+      </div>
+    </section>
+  </div>
+</main>
 <script>
-    let currentMode = 'phi';
+(() => {
+  let mode = 'phi';
+  const input = document.getElementById('prompt-input');
+  const count = document.getElementById('count');
+  const submit = document.getElementById('submit');
+  const error = document.getElementById('error');
+  const placeholder = document.getElementById('placeholder');
+  const loading = document.getElementById('loading');
+  const results = document.getElementById('results');
 
-    function selectMode(mode, el) {
-        currentMode = mode;
-        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-    }
+  document.querySelectorAll('.mode').forEach(button => button.addEventListener('click', () => {
+    mode = button.dataset.mode;
+    document.querySelectorAll('.mode').forEach(item => item.classList.toggle('active', item === button));
+  }));
+  input.addEventListener('input', () => { count.textContent = String(input.value.length); });
 
-    function updateCount() {
-        document.getElementById('char-count').textContent =
-            document.getElementById('prompt-input').value.length;
-    }
+  function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+  function text(tag, value, className){ const el=document.createElement(tag); if(className) el.className=className; el.textContent=String(value ?? ''); return el; }
 
-    function scoreColor(v) {
-        if (v >= 80) return '#4dff91';
-        if (v >= 60) return '#4db8ff';
-        if (v >= 40) return '#ffd700';
-        return '#ff6b6b';
-    }
+  function render(payload){
+    const data = payload.result || {};
+    document.getElementById('overall').textContent = String(data.overall ?? '—');
+    const badge = data.modalState || data.riskLevel || '';
+    document.getElementById('badge').textContent = badge ? `Project-local classification: ${badge}` : '';
 
-    function modalClass(state) {
-        if (!state) return '';
-        if (state === 'STEADY_STATE') return 'steady';
-        if (state === 'SAVAGE_REASON' || state === 'DISSONANT') return 'savage';
-        return '';
-    }
+    const scoreBox = document.getElementById('scores'); clear(scoreBox);
+    Object.entries(data.scores || {}).forEach(([key,value]) => {
+      const row=text('div','', 'row'); row.append(text('span', key.replace(/([A-Z])/g,' $1').trim())); row.append(text('strong', value)); scoreBox.append(row);
+    });
 
-    function renderResults(data) {
-        const { scores, overall, findings, recommendation, modalState, riskLevel } = data;
-        const scoreRows = Object.entries(scores).map(([key, val]) => {
-            const label = key.replace(/([A-Z])/g, ' $1').trim();
-            const color = scoreColor(val);
-            return `<div class="score-row">
-                <div class="score-row-label">${label}</div>
-                <div class="score-bar-wrap">
-                    <div class="score-bar" style="width:${val}%; background:${color}"></div>
-                </div>
-                <div class="score-val" style="color:${color}">${val}</div>
-            </div>`;
-        }).join('');
+    const findingBox = document.getElementById('findings'); clear(findingBox);
+    (data.findings || []).forEach(item => findingBox.append(text('div', item, 'finding')));
+    const rec=document.getElementById('recommendation'); rec.textContent=data.recommendation || '—';
+    document.getElementById('metadata').textContent = `Evidence class: ${payload.evidenceClass || 'MODEL_HEURISTIC'} · calibrated: ${payload.calibrated === true ? 'yes' : 'no'} · certification: ${payload.certification === true ? 'yes' : 'no'} · model: ${payload.model || 'provider-reported model unavailable'}`;
+  }
 
-        const badge = modalState || riskLevel || '';
-        const badgeClass = modalClass(modalState) ||
-            (riskLevel === 'LOW' ? 'steady' : riskLevel === 'CRITICAL' ? 'savage' : '');
-
-        document.getElementById('results-content').innerHTML = `
-            <div class="overall-score">
-                <div class="score-num">${overall}</div>
-                <div class="score-label">Overall Score</div>
-                ${badge ? `<div class="modal-badge ${badgeClass}">${badge.replace('_', ' ')}</div>` : ''}
-            </div>
-
-            <div class="card" style="margin-bottom:16px">
-                <div class="card-label">Dimension Scores</div>
-                <div class="sub-scores">${scoreRows}</div>
-            </div>
-
-            <div class="card" style="margin-bottom:16px">
-                <div class="card-label">Findings</div>
-                ${(findings || []).map(f => `<div class="finding-item">${f}</div>`).join('')}
-            </div>
-
-            <div class="card">
-                <div class="card-label">Recommendation</div>
-                <div class="recommendation">${recommendation || '—'}</div>
-            </div>
-        `;
-    }
-
-    async function runEval() {
-        const prompt = document.getElementById('prompt-input').value.trim();
-        if (!prompt) return;
-
-        const btn   = document.getElementById('btn-evaluate');
-        const label = document.getElementById('btn-label');
-        const err   = document.getElementById('error-msg');
-
-        btn.disabled = true;
-        label.textContent = '⬡ Auditing…';
-        err.style.display = 'none';
-
-        document.getElementById('results-placeholder').style.display = 'none';
-        document.getElementById('results-content').style.display     = 'none';
-        document.getElementById('loading').style.display             = 'block';
-
-        try {
-            const res = await fetch('/api/evaluate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt, mode: currentMode })
-            });
-
-            const json = await res.json();
-            if (!res.ok) throw new Error(json.error || 'API error');
-
-            renderResults(json.result);
-            document.getElementById('results-content').style.display = 'block';
-
-        } catch (e) {
-            err.textContent = `Error: ${e.message}`;
-            err.style.display = 'block';
-            document.getElementById('results-placeholder').style.display = 'block';
-        } finally {
-            document.getElementById('loading').style.display = 'none';
-            btn.disabled = false;
-            label.textContent = '⟁ Evaluate Prompt';
-        }
-    }
+  submit.addEventListener('click', async () => {
+    const prompt = input.value.trim();
+    if (!prompt) return;
+    submit.disabled=true; error.classList.add('hidden'); placeholder.classList.add('hidden'); results.classList.add('hidden'); loading.classList.remove('hidden');
+    try {
+      const response = await fetch('/api/evaluate', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt, mode}) });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Evaluator request failed (${response.status})`);
+      render(payload); results.classList.remove('hidden');
+    } catch (err) {
+      error.textContent = err instanceof Error ? err.message : 'Evaluator request failed.'; error.classList.remove('hidden'); placeholder.classList.remove('hidden');
+    } finally { loading.classList.add('hidden'); submit.disabled=false; }
+  });
+})();
 </script>
 </body>
 </html>

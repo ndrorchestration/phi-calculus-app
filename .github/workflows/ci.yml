@@ -1,4 +1,4 @@
-name: CI — Lint & Test
+name: CI — Runtime & Evidence Checks
 
 on:
   push:
@@ -6,38 +6,58 @@ on:
   pull_request:
     branches: [main]
 
-jobs:
-  lint:
-    name: Flake8 Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install flake8
-        run: pip install flake8
-      - name: Run flake8
-        run: flake8 . --max-line-length=120 --exclude=.git,__pycache__,*.egg-info
-        continue-on-error: true
+permissions:
+  contents: read
 
-  test:
-    name: Pytest
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify deployment configuration
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8'))"
+          test -s phi-app/index.html
+          test -s phi-app/assets/nav.css
+          test -s phi-app/assets/phi-shell.js
+          test -s phi-app/viz/index.html
+          test -s phi-app/evaluator/index.html
+          test -s phi-app/docs/index.html
+
+      - name: Verify evaluator JavaScript syntax
+        run: |
+          node --check api/evaluate.js
+          node --check phi-app/api/evaluate.js
+
+      - name: Verify public evidence boundary
+        run: |
+          grep -q "MODEL_HEURISTIC" api/evaluate.js
+          grep -q "not certification" phi-app/evaluator/index.html
+          grep -q "Dynamic Governance Agentic Formation" api/evaluate.js
+
+  python-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install dependencies
+      - name: Install test dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Run tests
+          pip install pytest flake8
+      - name: Lint Python sources
+        run: flake8 . --max-line-length=120 --exclude=.git,__pycache__,*.egg-info
+      - name: Run Python tests when present
         run: |
           if [ -d tests ]; then
-            pip install pytest
             pytest tests/ -v
           else
-            echo "No tests/ directory found — skipping."
+            echo "No Python tests/ directory present; runtime/evaluator checks are enforced in the verify job."
           fi
