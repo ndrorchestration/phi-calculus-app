@@ -7,10 +7,13 @@
     { "source": "/", "destination": "/phi-app/index.html" },
     { "source": "/assets/:path*", "destination": "/phi-app/assets/:path*" },
     { "source": "/viz", "destination": "/phi-app/viz/index.html" },
+    { "source": "/viz/", "destination": "/phi-app/viz/index.html" },
     { "source": "/viz/:path*", "destination": "/phi-app/viz/:path*" },
     { "source": "/evaluator", "destination": "/phi-app/evaluator/index.html" },
+    { "source": "/evaluator/", "destination": "/phi-app/evaluator/index.html" },
     { "source": "/evaluator/:path*", "destination": "/phi-app/evaluator/:path*" },
     { "source": "/docs", "destination": "/phi-app/docs/index.html" },
+    { "source": "/docs/", "destination": "/phi-app/docs/index.html" },
     { "source": "/docs/:path*", "destination": "/phi-app/docs/:path*" }
   ]
 }
