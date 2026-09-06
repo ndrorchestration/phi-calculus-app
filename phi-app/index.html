@@ -11,7 +11,7 @@
         .hero-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--phi-blue); }
         .hero-title { font-family:'Syne',sans-serif; font-size:clamp(40px,7vw,88px); font-weight:800; line-height:.95; letter-spacing:-1px; text-transform:uppercase; margin-bottom:24px; }
         .hero-title .gold { color:var(--phi-gold); } .hero-title .dim { color:var(--text-dim); }
-        .hero-desc { font-size:11px; line-height:1.9; color:var(--text-dim); max-width:520px; margin-bottom:40px; }
+        .hero-desc { font-size:11px; line-height:1.9; color:var(--text-dim); max-width:580px; margin-bottom:40px; }
         .hero-cta { display:flex; gap:12px; flex-wrap:wrap; }
         .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:80px; }
         @media (max-width:640px) { .stat-grid { grid-template-columns:1fr; } }
@@ -36,29 +36,32 @@
 
 <section class="hero">
     <div class="hero-eyebrow">Phi-Calculus · Experimental Research</div>
-    <h1 class="hero-title">Beyond<br><span class="gold">Pi-Based</span><br><span class="dim">Exploration</span></h1>
-    <p class="hero-desc">An interactive research surface for exploring phi-related sequences, geometric constructions, modal-frequency visualizations, and project-defined state models. Numerical performance and governance claims require reproducible evidence.</p>
+    <h1 class="hero-title">Phi-Based<br><span class="gold">Mathematical</span><br><span class="dim">Exploration</span></h1>
+    <p class="hero-desc">An interactive research surface for exploring phi-related sequences, geometric constructions, visual simulations, and project-defined state models. Implemented visual or model-generated behavior does not by itself validate mathematical, governance, cognitive, or engineering claims.</p>
     <div class="hero-cta">
-        <a class="btn btn-gold" href="/viz/">◈ Launch Visualization</a>
-        <a class="btn" href="/evaluator/">⟁ Evaluate a Prompt</a>
-        <a class="btn" href="/docs/">≡ Read the Docs</a>
+        <a class="btn btn-gold" href="/viz">◈ Launch Visualization</a>
+        <a class="btn" href="/evaluator">⟁ Evaluate a Prompt</a>
+        <a class="btn" href="/docs">≡ Read the Docs</a>
     </div>
     <div class="stat-grid" style="width:100%">
         <div class="stat-card"><div class="stat-num gold">φ</div><div class="stat-label">Golden Ratio</div><div class="stat-desc">A mathematical constant used by the project's experimental geometry and sequence explorations.</div></div>
-        <div class="stat-card"><div class="stat-num">11</div><div class="stat-label">Recurrence Order</div><div class="stat-desc">The order of the project's hendecabonacci recurrence experiment.</div></div>
-        <div class="stat-card"><div class="stat-num gold">∞</div><div class="stat-label">Research Space</div><div class="stat-desc">Visual exploration of modeled sequences, geometry, and state-space relationships.</div></div>
+        <div class="stat-card"><div class="stat-num">11</div><div class="stat-label">Recurrence Order</div><div class="stat-desc">The order of the project's hendecabonacci recurrence construction.</div></div>
+        <div class="stat-card"><div class="stat-num gold">55</div><div class="stat-label">Visualizer Nodes</div><div class="stat-desc">A Fibonacci-count display parameter used by the current Three.js visualizer; not an empirical sample size.</div></div>
     </div>
 </section>
 
 <section class="section">
-    <div class="section-title">Agent Ensemble</div>
-    <div class="section-sub">Project-local research personas · 8 roles</div>
+    <div class="section-title">Research Personas</div>
+    <div class="section-sub">Project-local explanatory and analysis roles</div>
     <div class="agent-grid">
-        ${[
-            ['Apogee','Lead QA / Audit'],['DemiJoule','Constraint Research'],['Reciprocity','Fairness Research'],['Herald','Communication'],
-            ['Prof Prodigy','Mathematical Research'],['Reson','Structural Analysis'],['Echolette','Feedback / Refinement'],['Lyra','Harmonic Integration']
-        ].map(([name, role]) => `
-        <div class="agent-chip"><div class="agent-name">${name}</div><div class="agent-role">${role}</div></div>`).join('')}
+        <div class="agent-chip"><div class="agent-name">Apogee</div><div class="agent-role">QA / audit persona</div></div>
+        <div class="agent-chip"><div class="agent-name">DemiJoule</div><div class="agent-role">Constraint research persona</div></div>
+        <div class="agent-chip"><div class="agent-name">Reciprocity</div><div class="agent-role">Fairness research persona</div></div>
+        <div class="agent-chip"><div class="agent-name">Herald</div><div class="agent-role">Communication persona</div></div>
+        <div class="agent-chip"><div class="agent-name">Prof Prodigy</div><div class="agent-role">Mathematical explanation persona</div></div>
+        <div class="agent-chip"><div class="agent-name">Reson</div><div class="agent-role">Structural analysis persona</div></div>
+        <div class="agent-chip"><div class="agent-name">Echolette</div><div class="agent-role">Feedback persona</div></div>
+        <div class="agent-chip"><div class="agent-name">Lyra</div><div class="agent-role">Integration persona</div></div>
     </div>
 </section>
 
@@ -71,6 +74,7 @@
             <tbody>
                 <tr><td>Hendecabonacci</td><td>Defined 11th-order recurrence</td><td class="tag-good">Mathematical construction</td></tr>
                 <tr><td>Phi-weighted geometry</td><td>Project-defined experimental calculations</td><td class="tag-good">Implementation-dependent</td></tr>
+                <tr><td>Visualizer transitions</td><td>Client-side simulation behavior</td><td class="tag-good">Implemented, not efficacy evidence</td></tr>
                 <tr><td>Compliance uplift</td><td>Historical/project claim</td><td class="tag-bad">Not currently established</td></tr>
                 <tr><td>Modal alignment</td><td>Historical/project claim</td><td class="tag-bad">Not currently established</td></tr>
                 <tr><td>O(1) phi-gating</td><td>Historical/project claim</td><td class="tag-bad">Not currently established</td></tr>
