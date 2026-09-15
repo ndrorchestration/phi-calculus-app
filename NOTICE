@@ -15,11 +15,14 @@ limitations under the License.
 
 ---
 
-This project is part of the ndrorchestration PHDGE ecosystem.
-Governance: DGAF (Dynamic Governance Agentic Formation) Framework
-Governance spine: https://github.com/ndrorchestration/DGAF-Framework
-Meta-orchestrator: Agent Amethyst
-Architect: Andrew Vance Hensel (Ndr / ndrorchestration)
+Project lineage and current authority boundary:
+- This project is part of the ndrorchestration research ecosystem.
+- DGAF means Dynamic Governance Agentic Formation and is a related governance/evaluation research track: https://github.com/ndrorchestration/DGAF-Framework
+- Historical PHDGE, Agent Amethyst, Professor Prodigy, and other persona/agent labels are retained as project-lineage vocabulary where applicable; they do not independently confer current approval, proof, governance, certification, or validation authority.
+- Current claims about this repository are governed by repository-local source, tests, derivations, dated evidence, and explicit maintainer decisions.
+- Cross-repository references do not transfer mathematical validity, scientific state, authorization, certification, compliance, deployment status, or empirical evidence.
+
+Architect / maintainer attribution: Andrew Vance Hensel (Ndr / ndrorchestration)
 
 Third-Party Notices:
 This project may include open-source dependencies. See individual
