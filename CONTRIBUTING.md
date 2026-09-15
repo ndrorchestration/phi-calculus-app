@@ -1,52 +1,65 @@
 # Contributing to Phi-Calculus-App
 
-## Governance
+## Authority and evidence boundary
 
-This repository is the **phi-harmonic calculus explorer** for the PhiLattice / PDMAL ecosystem, governed under the [DGAF Framework](https://github.com/ndrorchestration/DGAF-Framework). Meta-orchestrated by **Agent Amethyst**. Formal phi-calculus proofs and derivations are owned by **Professor Prodigy** (L3 Phi-Calculus Specialist).
+Phi-Calculus-App is a **public experimental research repository** for project-defined phi-related mathematical, visualization, and evaluation work. Current authority comes from repository-local source, tests, derivations, dated evidence, and explicit human-maintainer decisions.
 
-> ⚠️ This is a **private** repository. Core phi constants, frequency tuning tables, and constraint optimization algorithms are IP-protected per NDR-133. Architecture and explorer logic only.
+The project has historical relationships with DGAF, PDMAL/PhiLattice, Agent Amethyst, Professor Prodigy, and related ecosystem vocabulary. Those labels are preserved as lineage where useful; they do **not** independently confer present governance, proof, sign-off, certification, compliance, deployment, or validation authority.
 
-## What This App Explores
+`DGAF` means **Dynamic Governance Agentic Formation**. A DGAF cross-reference does not establish the mathematical validity of this repository's constructs or transfer DGAF/PDMAL scientific or authorization state.
 
-- Phi-harmonic ratio visualization (Golden ratio φ, Supergolden ψ, Metallic means)
-- Narayana sequence and Hendecabonacci derivations
-- Index 11 stability gradient calculations
-- Phi-calculus π-operator interactive explorer
-- Platinum Convergence audit substrate visualizations
+## What this app explores
 
-## Theoretical Foundation
+- phi-related sequence and ratio visualizations;
+- Narayana and higher-order recurrence experiments, including project-defined hendecabonacci work;
+- Index 11 and other project-defined stability constructs;
+- pi-calculus/process-algebra references where explicitly implemented or cited;
+- project-local phi-calculus evaluator and visualization experiments.
 
-The Platinum Convergence Audit provides the master architectural context:  
-[DGAF-Framework/docs/architecture/platinum-convergence-audit-v1.md](https://github.com/ndrorchestration/DGAF-Framework/blob/main/docs/architecture/platinum-convergence-audit-v1.md)
+These are project-defined constructs unless a particular mathematical statement is independently derived and supported by an appropriate source. A visualization or executable heuristic is not itself a formal proof.
 
-Key constants used in this app:
+## Mathematical and evidence rules
 
-| Constant | Symbol | Value | Use |
-|---|---|---|---|
-| Golden ratio | φ | 1.61803... | Sub-level stability baseline |
-| Supergolden ratio | ψ | 1.46557... | MAS coordination threshold |
-| Index 11 constant | S₁₁ | 1.77473... | System-wide audit gate |
-| Supersilver ratio | S₃ | 1.92756... | Latent space navigation |
+1. New constants, formulae, or derivations must identify their mathematical source or provide a derivation that can be reviewed directly.
+2. Formal-proof claims require the proof/derivation itself and human review appropriate to the claim; a persona label such as Professor Prodigy is not approval evidence.
+3. Visualizations must distinguish defined/modelled quantities from measured or empirically established quantities.
+4. Repository tests may verify implementation behavior but do not automatically establish mathematical novelty, external validity, physical meaning, safety, or efficacy.
+5. Claims inherited from another repository must be independently bound to evidence applicable here; cross-repository references do not transfer verification.
+6. Public contribution material must not imply that this repository is private, externally certified, production-ready, or formally validated unless current evidence establishes that exact proposition.
 
-Full Index 11 specification: [ai-governance-frameworks/docs/structural-alignment/index-11-governance-gate.md](https://github.com/ndrorchestration/ai-governance-frameworks/blob/main/docs/structural-alignment/index-11-governance-gate.md)
+## Historical theoretical context
 
-## Standards & Attribution
+Earlier project documentation used the Platinum Convergence Audit, Index 11 material, PhiLattice/PDMAL vocabulary, and persona-specialist roles as architectural context. Preserve those references as historical/project provenance when needed, but do not treat them as current proof or approval authority.
 
-- **π-calculus (Milner)** — Process algebra foundation
-- **Phi-Harmonic Modal Analysis** — Frequency-based stability scoring
-- **DGAF** — Dynamic Governance Assurance Framework
-- **NDR-133** — Personal Document Firewall
+Historical/project constants may include golden-ratio, supergolden, hendecagonal/platinum-mean, metallic-mean, and other project-defined quantities. Each specific use must be interpreted from its owning current source. Similar numerical values or names do not establish equivalence between different constants or theories.
 
-## How to Contribute (Authorized Only)
+## Standards and attribution
 
-1. Open an issue with a clear mathematical derivation request
-2. All new phi-constant additions require Professor Prodigy formal proof review
-3. All visualizations must reference their mathematical source in comments
-4. Submit PR with derivation evidence and Professor Prodigy sign-off
+- **pi-calculus (Milner)** — external process-algebra reference where actually applicable;
+- **phi-calculus** — project-defined research vocabulary in this repository unless otherwise cited;
+- **DGAF** — Dynamic Governance Agentic Formation, a related governance/evaluation research track;
+- **NDR labels/patterns** — project-local taxonomy/provenance unless a current owning specification says otherwise.
 
-## Cross-References
+Use of a framework, standard, research term, or cross-reference does not by itself establish compliance, certification, or correctness.
 
-- [DGAF-Framework](https://github.com/ndrorchestration/DGAF-Framework) — Governance spine + Platinum Convergence audit
-- [ai-governance-frameworks](https://github.com/ndrorchestration/ai-governance-frameworks) — Index 11 specification
-- [Driftwatch](https://github.com/ndrorchestration/Driftwatch) — Phi-calculus drift detection application
-- [3d-visualization-hub](https://github.com/ndrorchestration/3d-visualization-hub) — GCP Phase 4 visualization layer
+## Contribution workflow
+
+1. Open an issue describing the mathematical, visualization, evaluator, or documentation change.
+2. Branch from current `main`.
+3. Include derivation/source evidence for mathematical claims and executable tests for implementation claims where applicable.
+4. State the evidence boundary: what the change establishes, what remains hypothetical or unverified, and any historical terminology retained for provenance.
+5. Obtain ordinary repository review/maintainer acceptance; do not substitute persona or agent names for an accountable reviewer.
+6. Submit the PR with reproducible verification steps.
+
+## Cross-references
+
+- [DGAF-Framework](https://github.com/ndrorchestration/DGAF-Framework) — related governance/evaluation research track
+- [ai-governance-frameworks](https://github.com/ndrorchestration/ai-governance-frameworks) — related structural-alignment research
+- [Driftwatch](https://github.com/ndrorchestration/Driftwatch) — separate drift-detection research
+- [3d-visualization-hub](https://github.com/ndrorchestration/3d-visualization-hub) — separate visualization workstream
+
+---
+
+**Repository visibility:** Public  
+**Current proof/sign-off authority:** Repository evidence + accountable human review  
+**Persona labels:** Historical/project vocabulary, not independent approval authority
