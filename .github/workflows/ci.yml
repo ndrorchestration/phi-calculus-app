@@ -58,6 +58,20 @@ jobs:
           ! grep -q '+21% uplift' phi-app/docs/index.html
           ! grep -q '95% consistency' phi-app/docs/index.html
 
+      - name: Verify current authority semantics
+        run: |
+          ! grep -Fq 'Meta-orchestrator: Agent Amethyst' NOTICE
+          ! grep -Fq 'governed under the [DGAF Framework]' CONTRIBUTING.md
+          ! grep -Fq 'Meta-orchestrated by **Agent Amethyst**' CONTRIBUTING.md
+          ! grep -Fq 'owned by **Professor Prodigy**' CONTRIBUTING.md
+          ! grep -Fq 'This is a **private** repository' CONTRIBUTING.md
+          ! grep -Fq 'Dynamic Governance Assurance Framework' CONTRIBUTING.md
+          ! grep -Fq 'Professor Prodigy formal proof review' CONTRIBUTING.md
+          ! grep -Fq 'Professor Prodigy sign-off' CONTRIBUTING.md
+          grep -Fq 'Dynamic Governance Agentic Formation' CONTRIBUTING.md
+          grep -Fq 'historical' NOTICE
+          grep -Fq 'public repository' CONTRIBUTING.md
+
   python-tests:
     runs-on: ubuntu-latest
     steps:
